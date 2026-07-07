@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+<title>Rumaliwala | Rumali & Islamic Accessories</title>
+<meta name="description" content="Rumaliwala - Rumali, Namazi, Burkha accessories, caps, masks and gloves. Order on WhatsApp. Ahmedabad." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2314352c'/%3E%3Cpath d='M22 18.5A7 7 0 1 1 13 9a5.7 5.7 0 0 0 9 9.5z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:#f6f2ea; --surface:#fffdf9; --surface-2:#f1ebe0; --ink:#211f1b; --ink-soft:#6b675e;
+    --line:#e6dfd1; --line-dark:#d8cfbc; --accent:#14352c; --accent-2:#1d5a49; --accent-soft:#e7efe9;
+    --gold:#a67c3d; --danger:#a83228; --radius:14px; --radius-lg:20px;
+    --shadow:0 2px 10px rgba(33,31,27,.05); --shadow-lg:0 14px 40px rgba(33,31,27,.16); --maxw:1120px;
+  }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { margin:0; padding:0; }
+  body { font-family:'IBM Plex Sans','Noto Sans Devanagari','Noto Sans Gujarati',system-ui,sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; -webkit-font-smoothing:antialiased; padding-bottom:88px; }
+  h1,h2,h3,h4 { font-weight:600; letter-spacing:-0.3px; margin:0; }
+  button { font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+  img { max-width:100%; display:block; }
+  a { color:inherit; text-decoration:none; }
+  svg { display:block; }
+  .icon { width:22px; height:22px; }
+  input,textarea,select { font-family:inherit; }
+
+  header.top { position:sticky; top:0; z-index:40; background:rgba(246,242,234,.92); backdrop-filter:saturate(180%) blur(12px); border-bottom:1px solid var(--line); }
+  .top-inner { max-width:var(--maxw); margin:0 auto; padding:10px 12px; display:flex; align-items:center; gap:10px; }
+  .brand { display:flex; align-items:center; gap:9px; cursor:pointer; flex-shrink:0; }
+  .brand .mark { width:40px; height:40px; border-radius:11px; background:var(--accent); color:#fff; display:grid; place-items:center; }
+  .brand .mark svg { width:23px; height:23px; }
+  .brand h1 { font-size:18px; line-height:1; }
+  .brand p { font-size:9.5px; margin:2px 0 0; color:var(--ink-soft); letter-spacing:.3px; text-transform:uppercase; }
+  .search-wrap { flex:1; position:relative; max-width:420px; }
+  .search-wrap input { width:100%; padding:10px 12px 10px 38px; border:1px solid var(--line-dark); border-radius:30px; background:var(--surface); font-size:15px; color:var(--ink); outline:none; }
+  .search-wrap input:focus { border-color:var(--accent); }
+  .search-wrap .si { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--ink-soft); }
+  .search-wrap .si svg { width:18px; height:18px; }
+  .lang-btn { flex-shrink:0; display:flex; align-items:center; gap:5px; padding:8px 11px; border:1px solid var(--line-dark); border-radius:30px; background:var(--surface); font-size:13px; font-weight:600; color:var(--accent); }
+  .lang-btn svg { width:17px; height:17px; }
+
+  main { max-width:var(--maxw); margin:0 auto; padding:14px; }
+  .section-head { display:flex; align-items:center; gap:8px; margin:24px 2px 12px; }
+  .section-head svg { width:20px; height:20px; color:var(--gold); }
+  .section-head h3 { font-size:19px; }
+
+  .hero { position:relative; border-radius:var(--radius-lg); overflow:hidden; background:var(--accent); color:#f4efe4; padding:26px 22px; margin-top:4px; }
+  .hero .pattern { position:absolute; inset:0; opacity:.1; background-repeat:repeat; background-size:50px 50px; }
+  .hero-content { position:relative; }
+  .hero h2 { font-size:26px; line-height:1.12; margin:0 0 14px; color:#fbf7ee; }
+  .hero-cta { display:inline-flex; align-items:center; gap:8px; background:#fbf7ee; color:var(--accent); font-weight:600; padding:12px 22px; border-radius:30px; font-size:15px; }
+  .hero-cta svg { width:18px; height:18px; }
+
+  .cat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .cat-card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:15px 6px 11px; text-align:center; transition:transform .12s,box-shadow .12s,border-color .12s; }
+  .cat-card:active { transform:scale(.95); }
+  .cat-card:hover { box-shadow:var(--shadow); border-color:var(--line-dark); }
+  .cat-ic { width:46px; height:46px; margin:0 auto 8px; border-radius:12px; background:var(--accent-soft); color:var(--accent); display:grid; place-items:center; }
+  .cat-ic svg { width:28px; height:28px; stroke-width:1.6; }
+  .cat-card .name { font-size:12px; font-weight:500; line-height:1.2; }
+
+  .prod-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .prod-card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; position:relative; display:flex; flex-direction:column; transition:box-shadow .15s,border-color .15s; }
+  .prod-card:hover { box-shadow:var(--shadow); border-color:var(--line-dark); }
+  .prod-thumb { aspect-ratio:1/1; position:relative; cursor:pointer; overflow:hidden; background:var(--surface-2); }
+  .prod-thumb img { width:100%; height:100%; object-fit:cover; }
+  .prod-thumb .ph { position:absolute; inset:0; display:grid; place-items:center; }
+  .prod-thumb .ph svg { width:44px; height:44px; stroke-width:1.3; opacity:.5; }
+  .wish-btn { position:absolute; top:7px; right:7px; width:34px; height:34px; background:rgba(255,253,249,.92); border-radius:50%; display:grid; place-items:center; color:var(--ink); box-shadow:var(--shadow); z-index:2; }
+  .wish-btn svg { width:18px; height:18px; }
+  .wish-btn.on { color:var(--danger); }
+  .prod-body { padding:10px 11px 12px; display:flex; flex-direction:column; gap:3px; flex:1; }
+  .prod-title { font-size:14.5px; font-weight:600; line-height:1.2; cursor:pointer; }
+  .prod-meta { font-size:11.5px; color:var(--ink-soft); }
+  .prod-price-row { display:flex; align-items:baseline; gap:7px; margin-top:4px; }
+  .prod-price { font-size:18px; font-weight:700; }
+  .prod-mrp { font-size:12px; color:var(--ink-soft); text-decoration:line-through; }
+  .add-btn { margin-top:10px; border:1.5px solid var(--accent); color:var(--accent); background:var(--surface); font-weight:600; font-size:14px; padding:10px; border-radius:10px; display:flex; align-items:center; justify-content:center; gap:6px; transition:background .12s,color .12s; }
+  .add-btn svg { width:18px; height:18px; }
+  .add-btn:active,.add-btn:hover { background:var(--accent); color:#fff; }
+  .add-btn.oos { border-color:var(--line-dark); color:var(--ink-soft); }
+  .card-step { margin-top:10px; display:flex; align-items:center; justify-content:space-between; border:1.5px solid var(--accent); border-radius:10px; overflow:hidden; }
+  .card-step button { width:40px; height:40px; display:grid; place-items:center; color:#fff; background:var(--accent); }
+  .card-step button svg { width:18px; height:18px; }
+  .card-step span { font-weight:700; font-size:15px; }
+
+  .chips { display:flex; gap:8px; overflow-x:auto; padding:4px 0 10px; scrollbar-width:none; }
+  .chips::-webkit-scrollbar { display:none; }
+  .chip { white-space:nowrap; padding:9px 15px; border-radius:30px; border:1px solid var(--line-dark); background:var(--surface); font-size:14px; color:var(--ink-soft); transition:all .12s; cursor:pointer; }
+  .chip.active,.chip.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+  .back-bar { display:flex; align-items:center; gap:10px; margin:4px 0 2px; }
+  .back-btn { display:inline-flex; align-items:center; gap:5px; font-size:15px; font-weight:500; color:var(--accent-2); padding:6px 0; }
+  .back-btn svg { width:20px; height:20px; }
+  .page-h { font-size:23px; font-weight:600; margin:6px 2px 2px; }
+  .page-sub { font-size:13px; color:var(--ink-soft); margin:0 2px 14px; }
+
+  .sub-list { display:flex; flex-direction:column; gap:10px; }
+  .sub-row { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; display:flex; align-items:center; justify-content:space-between; }
+  .sub-row:hover { border-color:var(--accent); }
+  .sub-row span.t { font-size:16px; font-weight:600; }
+  .sub-row svg { width:20px; height:20px; color:var(--accent-2); }
+
+  .age-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .age-card { background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px 8px; text-align:center; font-weight:700; font-size:18px; transition:all .12s; }
+  .age-card:hover { border-color:var(--accent); color:var(--accent); }
+  .age-card small { display:block; font-weight:400; font-size:11px; color:var(--ink-soft); margin-top:2px; }
+
+  /* Compact product detail */
+  .pd { display:flex; flex-direction:column; gap:14px; }
+  .pd-main { border-radius:var(--radius-lg); overflow:hidden; background:var(--surface-2); border:1px solid var(--line); aspect-ratio:1/1; max-height:36vh; margin:0 auto; width:auto; position:relative; }
+  .pd-main img { width:100%; height:100%; object-fit:cover; }
+  .pd-main .ph { position:absolute; inset:0; display:grid; place-items:center; }
+  .pd-main .ph svg { width:80px; height:80px; stroke-width:1.1; opacity:.5; }
+  .pd-thumbs { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  .pd-thumbs .t { width:48px; height:48px; border-radius:9px; overflow:hidden; border:2px solid var(--line-dark); }
+  .pd-thumbs .t.on { border-color:var(--accent); }
+  .pd-thumbs .t img { width:100%; height:100%; object-fit:cover; }
+  .pd-info h2 { font-size:22px; margin:0 0 2px; }
+  .pd-price-row { display:flex; align-items:baseline; gap:8px; margin:6px 0 2px; }
+  .pd-price { font-size:24px; font-weight:700; }
+  .var-lbl { font-size:12px; font-weight:600; color:var(--ink-soft); margin:10px 0 6px; }
+  .colors { display:flex; gap:9px; flex-wrap:wrap; }
+  .color-dot { width:30px; height:30px; border-radius:50%; border:2px solid var(--line-dark); cursor:pointer; position:relative; }
+  .color-dot.on { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft); }
+  .size-chips { display:flex; gap:8px; flex-wrap:wrap; }
+  .size-chip { padding:8px 14px; border-radius:9px; border:1.5px solid var(--line-dark); font-weight:600; font-size:14px; cursor:pointer; }
+  .size-chip.on { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
+  .qty-row { display:flex; align-items:center; gap:14px; margin:14px 0 4px; }
+  .qty-ctrl { display:flex; align-items:center; border:1px solid var(--line-dark); border-radius:12px; overflow:hidden; }
+  .qty-ctrl button { width:44px; height:44px; display:grid; place-items:center; color:var(--accent); }
+  .qty-ctrl button svg { width:20px; height:20px; }
+  .qty-ctrl span { min-width:38px; text-align:center; font-weight:700; font-size:17px; }
+  .pd-specs { border-top:1px solid var(--line); margin-top:6px; }
+  .pd-specs .row { display:flex; justify-content:space-between; padding:9px 2px; border-bottom:1px solid var(--line); font-size:13.5px; }
+  .pd-specs .row span:first-child { color:var(--ink-soft); }
+
+  .btn-primary { background:var(--accent); color:#fff; font-weight:600; font-size:16px; padding:15px; border-radius:12px; width:100%; display:flex; align-items:center; justify-content:center; gap:8px; transition:background .12s; }
+  .btn-primary svg { width:20px; height:20px; }
+  .btn-primary:active { background:#0d271f; }
+  .btn-primary:disabled { background:#a9b3ad; }
+  .btn-wa { background:#1f8f4e; } .btn-wa:active { background:#187a41; }
+  .btn-danger { background:var(--danger); }
+  .btn-outline { background:var(--surface); border:1px solid var(--line-dark); color:var(--ink); font-weight:600; font-size:15px; padding:13px; border-radius:12px; width:100%; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .btn-outline svg { width:18px; height:18px; }
+
+  .cart-item { display:flex; gap:12px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:11px; margin-bottom:11px; }
+  .cart-thumb { width:66px; height:66px; border-radius:10px; overflow:hidden; background:var(--surface-2); display:grid; place-items:center; flex-shrink:0; }
+  .cart-thumb img { width:100%; height:100%; object-fit:cover; }
+  .cart-thumb svg { width:30px; height:30px; opacity:.5; }
+  .cart-info { flex:1; min-width:0; }
+  .cart-info h4 { margin:0 0 2px; font-size:15px; font-weight:600; }
+  .cart-info .m { font-size:12px; color:var(--ink-soft); }
+  .cart-qc { display:flex; align-items:center; gap:12px; margin-top:8px; }
+  .cart-qc .qty-ctrl button { width:34px; height:34px; } .cart-qc .qty-ctrl button svg { width:17px; height:17px; }
+  .cart-qc .qty-ctrl span { min-width:30px; font-size:15px; }
+  .cart-remove { color:var(--danger); display:grid; place-items:center; padding:4px; }
+  .cart-remove svg { width:19px; height:19px; }
+  .cart-line-price { font-weight:700; font-size:16px; text-align:right; white-space:nowrap; }
+
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:8px 0 4px; }
+  .field { display:flex; flex-direction:column; gap:6px; }
+  .field.full { grid-column:1 / -1; }
+  .field label { font-size:13px; font-weight:500; color:var(--ink-soft); display:flex; align-items:center; gap:6px; }
+  .field label svg { width:16px; height:16px; }
+  .field input,.field textarea,.field select { padding:13px; border:1px solid var(--line-dark); border-radius:10px; font-size:16px; background:var(--surface); color:var(--ink); outline:none; }
+  .field input:focus,.field textarea:focus,.field select:focus { border-color:var(--accent); }
+  .field .err { border-color:var(--danger) !important; }
+
+  .summary { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:15px; margin:15px 0; }
+  .summary .row { display:flex; justify-content:space-between; font-size:14px; padding:5px 0; }
+  .summary .row.total { font-size:20px; font-weight:700; border-top:1px solid var(--line); margin-top:6px; padding-top:12px; }
+
+  .empty { text-align:center; padding:56px 20px; color:var(--ink-soft); }
+  .empty svg { width:54px; height:54px; margin:0 auto 14px; opacity:.4; stroke-width:1.2; }
+
+  .fabs { position:fixed; right:15px; bottom:96px; z-index:45; display:flex; flex-direction:column; gap:12px; }
+  .fab { width:54px; height:54px; border-radius:50%; display:grid; place-items:center; box-shadow:var(--shadow-lg); color:#fff; }
+  .fab svg { width:26px; height:26px; }
+  .fab.wa { background:#1f8f4e; } .fab.call { background:var(--accent); }
+
+  .bottom-nav { position:fixed; bottom:0; left:0; right:0; z-index:44; background:var(--surface); border-top:1px solid var(--line); display:flex; justify-content:space-around; padding:7px 0 max(7px,env(safe-area-inset-bottom)); }
+  .bottom-nav button { display:flex; flex-direction:column; align-items:center; gap:3px; font-size:10.5px; color:var(--ink-soft); flex:1; position:relative; }
+  .bottom-nav button svg { width:23px; height:23px; }
+  .bottom-nav button.active { color:var(--accent); }
+  .nav-badge { position:absolute; top:-3px; right:50%; margin-right:-22px; background:var(--danger); color:#fff; font-size:9px; font-weight:700; min-width:16px; height:16px; border-radius:8px; display:grid; place-items:center; padding:0 4px; }
+
+  .toast { position:fixed; left:50%; bottom:150px; transform:translateX(-50%) translateY(20px); background:var(--ink); color:#fff; padding:12px 20px; border-radius:30px; font-size:14px; font-weight:500; z-index:60; opacity:0; pointer-events:none; transition:all .25s; box-shadow:var(--shadow-lg); max-width:90vw; text-align:center; }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+  .contact-row { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:2px; }
+  .contact-card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:15px 8px; text-align:center; font-size:12.5px; font-weight:500; }
+  .contact-card svg { width:26px; height:26px; margin:0 auto 7px; color:var(--accent); }
+  .site-footer { text-align:center; padding:28px 16px 12px; color:var(--ink-soft); font-size:12px; }
+  .site-footer button { display:inline-flex; align-items:center; gap:5px; color:var(--ink-soft); margin-top:6px; }
+  .site-footer button svg { width:15px; height:15px; }
+
+  .wholesale-hero { position:relative; overflow:hidden; background:var(--accent); color:#f4efe4; border-radius:var(--radius-lg); padding:26px 20px; margin-bottom:18px; }
+  .wholesale-hero .pattern { position:absolute; inset:0; opacity:.1; background-size:50px 50px; }
+  .wholesale-hero h2 { position:relative; margin:0 0 6px; font-size:22px; }
+  .wholesale-hero p { position:relative; margin:0; opacity:.85; font-size:14px; }
+
+  .skel-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .skel { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); height:240px; position:relative; overflow:hidden; }
+  .skel::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(0,0,0,.03),transparent); transform:translateX(-100%); animation:sh 1.2s infinite; }
+  @keyframes sh { 100% { transform:translateX(100%); } }
+
+  /* Admin */
+  .admin-wrap { max-width:760px; margin:0 auto; }
+  .admin-login { max-width:380px; margin:40px auto; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-lg); padding:28px 24px; text-align:center; }
+  .admin-login .lk { width:54px; height:54px; border-radius:14px; background:var(--accent-soft); color:var(--accent); display:grid; place-items:center; margin:0 auto 14px; }
+  .admin-login .lk svg { width:28px; height:28px; }
+  .admin-tabs { display:flex; gap:8px; margin:6px 0 16px; }
+  .admin-tabs button { flex:1; padding:11px; border-radius:10px; border:1px solid var(--line-dark); background:var(--surface); font-weight:600; font-size:13.5px; display:flex; align-items:center; justify-content:center; gap:6px; color:var(--ink-soft); }
+  .admin-tabs button svg { width:17px; height:17px; }
+  .admin-tabs button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .admin-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+  .stat-card { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px 8px; text-align:center; }
+  .stat-card .n { font-size:26px; font-weight:700; }
+  .stat-card .l { font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.4px; }
+  .admin-row { display:flex; align-items:center; gap:12px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:10px; margin-bottom:9px; }
+  .admin-row .th { width:50px; height:50px; border-radius:10px; overflow:hidden; background:var(--surface-2); display:grid; place-items:center; flex-shrink:0; }
+  .admin-row .th img { width:100%; height:100%; object-fit:cover; }
+  .admin-row .th svg { width:26px; height:26px; opacity:.5; }
+  .admin-row .meta { flex:1; min-width:0; }
+  .admin-row .meta h4 { margin:0; font-size:15px; font-weight:600; }
+  .admin-row .meta p { margin:2px 0 0; font-size:12px; color:var(--ink-soft); }
+  .admin-row .acts { display:flex; gap:6px; }
+  .admin-row .acts button { width:38px; height:38px; border-radius:9px; border:1px solid var(--line-dark); display:grid; place-items:center; color:var(--ink-soft); }
+  .admin-row .acts button svg { width:17px; height:17px; }
+  .admin-row.off { opacity:.55; }
+  .pill-stat { font-size:10px; font-weight:700; text-transform:uppercase; padding:2px 7px; border-radius:12px; }
+  .pill-stat.live { background:var(--accent-soft); color:var(--accent); }
+  .pill-stat.hidden { background:#f0e9db; color:var(--ink-soft); }
+  .pill-stat.oos { background:#f6e2df; color:var(--danger); }
+
+  .fld { margin-bottom:18px; }
+  .fld > label { font-size:14px; font-weight:600; color:var(--ink); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+  .fld > label svg { width:17px; height:17px; color:var(--ink-soft); }
+  .chip-wrap { display:flex; flex-wrap:wrap; gap:8px; }
+  .chip-ic { display:inline-flex; align-items:center; gap:6px; }
+  .chip-ic svg { width:17px; height:17px; }
+  .swatch-wrap { display:flex; flex-wrap:wrap; gap:8px; }
+  .swatch { width:42px; height:42px; border-radius:10px; border:2px solid var(--line-dark); position:relative; cursor:pointer; }
+  .swatch.on { border-color:var(--accent); }
+  .swatch .tick { position:absolute; inset:0; display:grid; place-items:center; color:#fff; }
+  .swatch .tick svg { width:18px; height:18px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
+  .icon-pick { display:flex; flex-wrap:wrap; gap:8px; }
+  .icon-pick button { width:48px; height:48px; border-radius:12px; border:1.5px solid var(--line-dark); display:grid; place-items:center; color:var(--ink); background:var(--surface); }
+  .icon-pick button svg { width:24px; height:24px; }
+  .icon-pick button.on { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
+  .photo-tiles { display:flex; flex-wrap:wrap; gap:10px; }
+  .photo-tiles .pt { width:88px; height:88px; border-radius:12px; overflow:hidden; background:var(--surface-2); position:relative; border:1px solid var(--line-dark); }
+  .photo-tiles .pt img { width:100%; height:100%; object-fit:cover; }
+  .photo-tiles .pt .rm { position:absolute; top:3px; right:3px; width:22px; height:22px; border-radius:50%; background:rgba(0,0,0,.6); color:#fff; display:grid; place-items:center; }
+  .photo-tiles .pt .rm svg { width:13px; height:13px; }
+  .photo-add { width:88px; height:88px; border-radius:12px; border:2px dashed var(--line-dark); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; color:var(--ink-soft); font-size:11px; font-weight:600; background:var(--surface); }
+  .photo-add svg { width:26px; height:26px; }
+  .toggle-row { display:flex; gap:8px; } .toggle-row .chip { flex:1; text-align:center; justify-content:center; display:flex; }
+  .cat-manage-row { display:flex; align-items:center; gap:12px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:11px 12px; margin-bottom:9px; }
+  .cat-manage-row .ci { width:42px; height:42px; border-radius:10px; background:var(--accent-soft); color:var(--accent); display:grid; place-items:center; }
+  .cat-manage-row .ci svg { width:24px; height:24px; }
+  .cat-manage-row .nm { flex:1; font-weight:600; font-size:15px; }
+  .cat-manage-row .cnt { font-size:12px; color:var(--ink-soft); }
+  .cat-manage-row .del { width:38px; height:38px; border-radius:9px; border:1px solid var(--line-dark); display:grid; place-items:center; color:var(--ink-soft); }
+  .cat-manage-row .del svg { width:17px; height:17px; }
+  /* Wizard */
+  .wiz-steps { display:flex; gap:6px; margin:2px 0 16px; }
+  .wiz-steps .s { flex:1; height:5px; border-radius:3px; background:var(--line-dark); }
+  .wiz-steps .s.on { background:var(--accent); }
+  .wiz-nav { display:flex; gap:10px; margin-top:8px; }
+  .wiz-nav button { flex:1; }
+
+  @media (min-width:720px) {
+    .cat-grid { grid-template-columns:repeat(8,1fr); }
+    .prod-grid,.skel-grid { grid-template-columns:repeat(4,1fr); }
+    .age-grid { grid-template-columns:repeat(6,1fr); }
+    .pd { display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:start; }
+    .pd-main { max-height:none; width:100%; }
+    body { padding-bottom:20px; }
+    .bottom-nav { display:none; }
+    .fabs { bottom:24px; }
+    .hero h2 { font-size:34px; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand" onclick="go('home')"><div class="mark" id="brandMark"></div><div><h1>Rumaliwala</h1><p id="brandTag">Rumali &amp; Accessories</p></div></div>
+    <div class="search-wrap"><span class="si" id="searchIcon"></span><input id="searchInput" type="search" placeholder="Search..." oninput="onSearch(this.value)" /></div>
+    <button class="lang-btn" id="langBtn" onclick="cycleLang()"></button>
+  </div>
+</header>
+<main id="app"></main>
+<div class="fabs"><a class="fab wa" id="fabWa" title="WhatsApp"></a><a class="fab call" id="fabCall" title="Call"></a></div>
+<nav class="bottom-nav">
+  <button id="navHome" onclick="go('home')" data-ic="home"></button>
+  <button id="navCats" onclick="go('categories')" data-ic="grid"></button>
+  <button id="navWish" onclick="go('wishlist')" data-ic="heart"></button>
+  <button id="navCart" onclick="go('cart')" data-ic="cart"><span class="nav-badge" id="navCartBadge" style="display:none">0</span></button>
+</nav>
+<div class="toast" id="toast"></div>
+<input type="file" id="fileInput" accept="image/*" multiple style="display:none" />
+
+<script>
+/* ============ CONFIG ============ */
+const CONFIG = {
+  businessName:"Rumaliwala",
+  whatsapp:"919999999999",     // TODO replace with real number
+  callNumber:"919999999999",
+  city:"Ahmedabad",
+  currency:"₹",
+};
+const SB = { url:"https://xoiksbtxoxrifkgvupqp.supabase.co", key:"sb_publishable_UwUNp74KFKUlbqQ7aY0s7Q_toy7kUiD" };
+const UPLOAD_FN = SB.url + "/functions/v1/rw-upload";
+
+/* ============ I18N ============ */
+const LANGS = ["en","hi","gu"];
+const LANG_LABEL = { en:"EN", hi:"हिं", gu:"ગુ" };
+const T = {
+  en:{ search:"Search...", tag:"Rumali & Accessories", hero:"Rumali, Namazi & more", shop_now:"Shop now", categories:"Categories",
+    popular:"Popular", newarr:"New", recent:"Recently Seen", contact:"Contact", whatsapp:"WhatsApp", call:"Call", admin:"Admin",
+    nav_home:"Home", nav_shop:"Shop", nav_saved:"Saved", nav_cart:"Cart", shop_title:"Shop",
+    choose_type:"Choose type", choose_size:"Choose size", show_all:"Show all", all:"All", back:"Back", home:"Home",
+    add:"Add", notify:"Notify", outstock:"Out of stock", available:"Available", stock:"Stock",
+    size:"Size", colour:"Colour", type:"Type", fabric:"Fabric", qty:"Qty", add_cart:"Add to Cart", share:"Share",
+    select_size:"Select size", select_colour:"Select colour",
+    cart:"Cart", cart_empty:"Cart is empty", your_details:"Your Details", name:"Name", mobile:"Mobile", address:"Address",
+    city:"City", pin:"PIN", order_wa:"Order on WhatsApp", no_pay:"No online payment. Confirm on WhatsApp.", total:"Total", item:"item", items:"items",
+    saved:"Saved", save_hint:"Tap the heart on a product to save it.", search_t:"Search", no_match:"No match.", nothing:"Nothing here yet.",
+    wholesale:"Wholesale Partner", wholesale_sub:"Bulk pricing for shops and resellers.", shop:"Shop", monthly:"Monthly need",
+    prod_cat:"Product Category", other:"Other", send_wa:"Send on WhatsApp", fill_req:"Please fill the required fields",
+    added:"Added to cart", loading:"Loading..." },
+  hi:{ search:"खोजें...", tag:"रुमाली और एक्सेसरीज़", hero:"रुमाली, नमाज़ी और बहुत कुछ", shop_now:"अभी खरीदें", categories:"श्रेणियाँ",
+    popular:"लोकप्रिय", newarr:"नया", recent:"हाल में देखा", contact:"संपर्क", whatsapp:"व्हाट्सएप", call:"कॉल", admin:"एडमिन",
+    nav_home:"होम", nav_shop:"खरीदें", nav_saved:"सेव", nav_cart:"कार्ट", shop_title:"खरीदें",
+    choose_type:"प्रकार चुनें", choose_size:"साइज़ चुनें", show_all:"सभी दिखाएँ", all:"सभी", back:"वापस", home:"होम",
+    add:"जोड़ें", notify:"सूचित करें", outstock:"स्टॉक ख़त्म", available:"उपलब्ध", stock:"स्टॉक",
+    size:"साइज़", colour:"रंग", type:"प्रकार", fabric:"कपड़ा", qty:"मात्रा", add_cart:"कार्ट में डालें", share:"शेयर",
+    select_size:"साइज़ चुनें", select_colour:"रंग चुनें",
+    cart:"कार्ट", cart_empty:"कार्ट खाली है", your_details:"आपका विवरण", name:"नाम", mobile:"मोबाइल", address:"पता",
+    city:"शहर", pin:"पिन", order_wa:"व्हाट्सएप पर ऑर्डर करें", no_pay:"कोई ऑनलाइन भुगतान नहीं। व्हाट्सएप पर पुष्टि करें।", total:"कुल", item:"वस्तु", items:"वस्तुएँ",
+    saved:"सेव किया", save_hint:"सेव करने के लिए दिल पर टैप करें।", search_t:"खोज", no_match:"कुछ नहीं मिला।", nothing:"अभी कुछ नहीं है।",
+    wholesale:"थोक साझेदार", wholesale_sub:"दुकानों और विक्रेताओं के लिए थोक मूल्य।", shop:"दुकान", monthly:"मासिक ज़रूरत",
+    prod_cat:"उत्पाद श्रेणी", other:"अन्य", send_wa:"व्हाट्सएप पर भेजें", fill_req:"कृपया आवश्यक जानकारी भरें",
+    added:"कार्ट में जोड़ा", loading:"लोड हो रहा है..." },
+  gu:{ search:"શોધો...", tag:"રૂમાલી અને એક્સેસરીઝ", hero:"રૂમાલી, નમાઝી અને વધુ", shop_now:"હમણાં ખરીદો", categories:"શ્રેણીઓ",
+    popular:"લોકપ્રિય", newarr:"નવું", recent:"તાજેતરમાં જોયું", contact:"સંપર્ક", whatsapp:"વોટ્સએપ", call:"કૉલ", admin:"એડમિન",
+    nav_home:"હોમ", nav_shop:"ખરીદો", nav_saved:"સેવ", nav_cart:"કાર્ટ", shop_title:"ખરીદો",
+    choose_type:"પ્રકાર પસંદ કરો", choose_size:"સાઇઝ પસંદ કરો", show_all:"બધું બતાવો", all:"બધું", back:"પાછળ", home:"હોમ",
+    add:"ઉમેરો", notify:"જાણ કરો", outstock:"સ્ટોક ખતમ", available:"ઉપલબ્ધ", stock:"સ્ટોક",
+    size:"સાઇઝ", colour:"રંગ", type:"પ્રકાર", fabric:"કાપડ", qty:"જથ્થો", add_cart:"કાર્ટમાં ઉમેરો", share:"શેર",
+    select_size:"સાઇઝ પસંદ કરો", select_colour:"રંગ પસંદ કરો",
+    cart:"કાર્ટ", cart_empty:"કાર્ટ ખાલી છે", your_details:"તમારી વિગતો", name:"નામ", mobile:"મોબાઇલ", address:"સરનામું",
+    city:"શહેર", pin:"પિન", order_wa:"વોટ્સએપ પર ઓર્ડર કરો", no_pay:"કોઈ ઓનલાઇન ચુકવણી નથી. વોટ્સએપ પર પુષ્ટિ કરો.", total:"કુલ", item:"વસ્તુ", items:"વસ્તુઓ",
+    saved:"સેવ કરેલ", save_hint:"સેવ કરવા હૃદય પર ટૅપ કરો.", search_t:"શોધ", no_match:"કંઈ મળ્યું નથી.", nothing:"અહીં હજી કંઈ નથી.",
+    wholesale:"જથ્થાબંધ ભાગીદાર", wholesale_sub:"દુકાનો અને વિક્રેતાઓ માટે જથ્થાબંધ ભાવ.", shop:"દુકાન", monthly:"માસિક જરૂરિયાત",
+    prod_cat:"ઉત્પાદન શ્રેણી", other:"અન્ય", send_wa:"વોટ્સએપ પર મોકલો", fill_req:"કૃપા કરીને જરૂરી વિગતો ભરો",
+    added:"કાર્ટમાં ઉમેર્યું", loading:"લોડ થાય છે..." },
+};
+const CAT_I18N = {
+  rumali:{hi:"रुमाली",gu:"રૂમાલી"}, nose:{hi:"नोज़ पीस",gu:"નોઝ પીસ"}, burkha:{hi:"बुरखा",gu:"બુરખા"},
+  gloves:{hi:"दस्ताने",gu:"ગ્લવ્ઝ"}, mask:{hi:"मास्क",gu:"માસ્ક"}, cap:{hi:"टोपी",gu:"ટોપી"},
+  namazi:{hi:"नमाज़ी",gu:"નમાઝી"}, premium_burkha:{hi:"प्रीमियम बुरखा",gu:"પ્રીમિયમ બુરખા"}, wholesale:{hi:"थोक",gu:"જથ્થાબંધ"},
+};
+let LANG = localStorage.getItem("rw_lang") || "en";
+function t(k){ return (T[LANG]&&T[LANG][k]) || T.en[k] || k; }
+/* Product content machine translation (best-effort, cached) */
+let TR = {}; try { TR = JSON.parse(localStorage.getItem("rw_tr")||"{}"); } catch(e){}
+const pendingTr = new Set(); let trBusy=false;
+function P(text){ // translate product text
+  if(!text || LANG==="en") return text||"";
+  const k = LANG+"|"+text;
+  if(k in TR) return TR[k];
+  pendingTr.add(text);
+  return text; // fallback until translated
+}
+async function flushTr(){
+  if(trBusy || LANG==="en" || !pendingTr.size) return;
+  trBusy=true;
+  const items=[...pendingTr]; pendingTr.clear();
+  for(const text of items){
+    const k=LANG+"|"+text;
+    if(k in TR) continue;
+    try{
+      const r=await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${LANG}&dt=t&q=${encodeURIComponent(text)}`);
+      const d=await r.json();
+      TR[k]=(d[0]||[]).map(x=>x[0]).join("");
+    }catch(e){ TR[k]=text; } // on failure keep original, stop retrying
+  }
+  try{ localStorage.setItem("rw_tr", JSON.stringify(TR)); }catch(e){}
+  trBusy=false;
+  render();
+}
+function cycleLang(){ LANG = LANGS[(LANGS.indexOf(LANG)+1)%LANGS.length]; localStorage.setItem("rw_lang",LANG); document.documentElement.lang=LANG; applyChrome(); render(); }
+
+/* ============ ICONS ============ */
+const ICONS = {
+  moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+  rumali:'<path d="M6 4c3.5 2.5 8.5 2.5 12 0"/><path d="M6 4v7c0 3.9 2.7 7 6 7s6-3.1 6-7V4"/><path d="M9 10c1.8 1.2 4.2 1.2 6 0"/>',
+  nose:'<path d="M12 3l8 6-8 12L4 9z"/><path d="M4 9h16"/><path d="M9 9l3 12 3-12"/>',
+  burkha:'<path d="M12 3c-3 0-5 2.2-5 5v3c0 3 2 5 5 5s5-2 5-5V8c0-2.8-2-5-5-5z"/><path d="M7.5 8c2-1.6 7-1.6 9 0"/><path d="M4 21c1.5-3.6 4.5-5.4 8-5.4s6.5 1.8 8 5.4"/>',
+  gloves:'<path d="M8 21v-5"/><path d="M8 16c-1.7 0-3-1.3-3-3V9.5a1.5 1.5 0 0 1 3 0V12"/><path d="M8 12V5.5a1.5 1.5 0 0 1 3 0V11"/><path d="M11 11V6.5a1.5 1.5 0 0 1 3 0V12"/><path d="M14 12V8.5a1.5 1.5 0 0 1 3 0V14c0 4-2.5 7-6 7"/>',
+  mask:'<path d="M3 10c3-1.2 5.5-1.8 9-1.8s6 .6 9 1.8c0 5.5-3.5 8.7-9 8.7S3 15.5 3 10z"/><path d="M2 10l1.6.5M22 10l-1.6.5"/><path d="M8.5 12.6c2 1 5 1 7 0"/>',
+  cap:'<path d="M4 15c0-5 3.6-8.5 8-8.5s8 3.5 8 8.5"/><path d="M3 15h18"/><path d="M12 6.5V4"/>',
+  namazi:'<path d="M12 3c2.6 1.8 4.2 4 4.2 6.8V21H7.8V9.8C7.8 7 9.4 4.8 12 3z"/><path d="M4 21V13c0-1.2 1-2.2 2.2-2.2M20 21v-8c0-1.2-1-2.2-2.2-2.2"/><path d="M3.5 21h17"/>',
+  box:'<path d="M12 3l8 4v10l-8 4-8-4V7z"/><path d="M4 7l8 4 8-4"/><path d="M12 11v10"/>',
+  shirt:'<path d="M8 3l4 3 4-3 4 3-3 3v12H7V9L4 6z"/>', ring:'<circle cx="12" cy="14" r="6"/><path d="M9 6l3-3 3 3-1.5 3h-3z"/>',
+  scarf:'<path d="M5 4h14v6a7 7 0 0 1-14 0z"/><path d="M9 16v4M15 16v4"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/>',
+  cart:'<circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/><path d="M2.5 4h2.2l2 12h11l2-8H6"/>',
+  home:'<path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/>',
+  grid:'<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>',
+  heart:'<path d="M12 20s-7-4.4-9.3-8.3C1 8.6 2.7 5 6.1 5c2 0 3.1 1.1 3.9 2.3C10.8 6.1 11.9 5 13.9 5c3.4 0 5.1 3.6 3.4 6.7C15 15.6 12 20 12 20z"/>',
+  phone:'<path d="M6 3c1 0 1.7.6 2 1.6l.8 2.6c.2.8 0 1.5-.6 2l-1.2 1c1 2 2.6 3.6 4.6 4.6l1-1.2c.5-.6 1.2-.8 2-.6l2.6.8c1 .3 1.6 1 1.6 2v2c0 1.2-1 2.2-2.2 2.1C9.7 21.6 2.4 14.3 2 5.2 1.9 4 2.8 3 4 3z"/>',
+  whatsapp:'<path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.5-1.2A9 9 0 1 0 12 3z"/><path d="M8.5 8.3c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.6 1.6c.1.2.1.4-.1.6l-.5.6c-.1.2-.2.3 0 .6.3.6 1.3 1.7 2.3 2.1.3.2.5.1.6 0l.6-.7c.2-.2.3-.2.6-.1l1.5.7c.3.1.4.3.4.5 0 .9-.9 1.6-1.7 1.6-1.1 0-3.6-1-5.2-3.3-1-1.4-1.6-2.8-1.6-3.7 0-.3.1-.6.2-.8z"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>', minus:'<path d="M5 12h14"/>',
+  trash:'<path d="M5 7h14M10 7V5h4v2M6 7l1 13h10l1-13"/>',
+  back:'<path d="M15 5l-7 7 7 7"/>', arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  share:'<circle cx="6" cy="12" r="2.3"/><circle cx="18" cy="6" r="2.3"/><circle cx="18" cy="18" r="2.3"/><path d="M8 11l8-4M8 13l8 4"/>',
+  pin:'<path d="M12 21c4-4.5 7-7.6 7-11a7 7 0 0 0-14 0c0 3.4 3 6.5 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  lock:'<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+  check:'<path d="M5 12l5 5 9-11"/>', bell:'<path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10 19a2 2 0 0 0 4 0"/>',
+  star:'<path d="M12 3l2.6 5.6 6 .6-4.5 4 1.3 6L12 16.8 6.6 19.2l1.3-6-4.5-4 6-.6z"/>',
+  spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+  pencil:'<path d="M4 20h4L18 10l-4-4L4 16z"/><path d="M13 7l4 4"/>',
+  image:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.8"/><path d="M4 18l5-5 4 4 3-3 4 4"/>',
+  camera:'<path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.2"/>',
+  gear:'<circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/>',
+  tag:'<path d="M4 4h8l8 8-8 8-8-8z"/><circle cx="8" cy="8" r="1.4"/>',
+  rupee:'<path d="M7 5h10M7 9h10M15 5c0 4-3 6-8 6l7 8"/>', layers:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>', eye:'<path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/>',
+  eyeoff:'<path d="M4 4l16 16"/><path d="M9.5 5.6A9.7 9.7 0 0 1 12 5.5c6.5 0 10 6.5 10 6.5a16 16 0 0 1-3 3.6M6 7.2A15.8 15.8 0 0 0 2 12s3.5 6.5 10 6.5a9.7 9.7 0 0 0 3-.5"/>',
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.7 6 3.7 9s-1.2 6.5-3.7 9c-2.5-2.5-3.7-6-3.7-9s1.2-6.5 3.7-9z"/>',
+  upload:'<path d="M12 15V4M8 8l4-4 4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/>', list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+};
+function icon(name,cls){ return `<svg class="${cls||'icon'}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]||''}</svg>`; }
+function iconFill(name,cls){ return `<svg class="${cls||'icon'}" viewBox="0 0 24 24" fill="currentColor" stroke="none">${ICONS[name]||''}</svg>`; }
+function patternURI(stroke){ const s=stroke.replace('#','%23'); const svg=`<svg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'><g fill='none' stroke='${s}' stroke-width='1'><rect x='11' y='11' width='22' height='22'/><rect x='11' y='11' width='22' height='22' transform='rotate(45 22 22)'/></g></svg>`; return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`; }
+
+const ICON_CHOICES=["rumali","cap","namazi","nose","burkha","gloves","mask","scarf","ring","shirt","box","heart","bell","moon","pin","tag"];
+const PALETTE=[{n:"White",h:"#ffffff"},{n:"Black",h:"#1b2631"},{n:"Green",h:"#14352c"},{n:"Maroon",h:"#7b241c"},{n:"Navy",h:"#1a5276"},{n:"Gold",h:"#a67c3d"},{n:"Purple",h:"#6c3483"},{n:"Grey",h:"#5d6d7e"},{n:"Pink",h:"#f1948a"},{n:"Sky",h:"#85c1e9"},{n:"Cream",h:"#f9e79f"},{n:"Brown",h:"#7e5109"}];
+const DEFAULT_CATS=[{id:"rumali",name:"Rumali",icon:"rumali"},{id:"nose",name:"Nose Piece",icon:"nose"},{id:"burkha",name:"Burkha",icon:"burkha"},{id:"gloves",name:"Gloves",icon:"gloves"},{id:"mask",name:"Mask",icon:"mask"},{id:"cap",name:"Cap",icon:"cap"},{id:"namazi",name:"Namazi",icon:"namazi"}];
+const WHOLESALE={ id:"wholesale", name:"Wholesale", icon:"box", special:true };
+const AGE_KIDS=["2 Years","3 Years","4 Years","5 Years","6 Years","7 Years","8 Years","9 Years","10 Years","11 Years","12 Years"];
+const AGE_ADULT=["12+ Years","Adult Free Size"];
+const AGE_ALL=["Baby",...AGE_KIDS,...AGE_ADULT];
+const SIZE_CHOICES=["Free Size","Adult Free Size","S","M","L","XL","XXL","Baby",...AGE_KIDS,"12+ Years"];
+const SEED=[{id:"s1",cat:"rumali",sub:"Diamond Rumali",age:"6 Years",title:"Diamond Net Rumali",price:120,mrp:150,fabric:"Soft Cotton",colors:["#14352c","#7b241c"],sizes:[],images:[],stars:5,stock:24,desc:""},{id:"s2",cat:"cap",sub:"Prayer Cap",age:"Adult Free Size",title:"Cotton Prayer Cap",price:60,mrp:80,fabric:"Cotton",colors:["#ffffff","#14352c"],sizes:[],images:[],stars:5,stock:50,desc:""}];
+
+/* ============ STATE ============ */
+const store = {
+  products:[], categories:[], loaded:false,
+  cart:load("rw_cart",[]), wishlist:load("rw_wish",[]), recent:load("rw_recent",[]),
+  view:"home", filterCat:null, filterSub:null, filterAge:null, search:"", sort:"featured", _detailId:null,
+  admin:{ pass:sessionStorage.getItem("rw_pass")||null, tab:"products", form:null, editing:null, step:0, uploading:false, catAdding:false, newCat:{name:"",icon:"box"}, bulk:false, bulkText:"" },
+};
+function load(k,d){ try{ return JSON.parse(localStorage.getItem(k))||d; }catch(e){ return d; } }
+function save(k,v){ localStorage.setItem(k,JSON.stringify(v)); }
+function persist(){ save("rw_cart",store.cart); save("rw_wish",store.wishlist); save("rw_recent",store.recent); }
+
+/* ============ SUPABASE ============ */
+async function sbGet(path){ const r=await fetch(`${SB.url}/rest/v1/${path}`,{headers:{apikey:SB.key,Authorization:"Bearer "+SB.key}}); if(!r.ok) throw new Error("fetch failed"); return r.json(); }
+async function sbRpc(fn,body){ const r=await fetch(`${SB.url}/rest/v1/rpc/${fn}`,{method:"POST",headers:{apikey:SB.key,Authorization:"Bearer "+SB.key,"Content-Type":"application/json"},body:JSON.stringify(body)}); const text=await r.text(); if(!r.ok) throw new Error(text||"request failed"); try{return JSON.parse(text);}catch(e){return text;} }
+function normalize(rows){ return rows.map(r=>({ id:r.id, cat:r.category, sub:r.subcategory||"", age:r.age||"", title:r.title, price:Number(r.price), mrp:Number(r.mrp)||0, fabric:r.fabric||"", colors:r.colors||[], sizes:r.sizes||[], images:r.images||[], image:(r.images&&r.images[0])||r.image_url||"", stars:r.rating||5, stock:r.stock||0, active:r.active, desc:r.description||"", sort_order:r.sort_order||0, created:r.created_at })); }
+async function loadData(){
+  try{
+    const [prods,cats]=await Promise.all([ sbGet("rw_products?select=*&order=sort_order.asc,created_at.asc"), sbGet("rw_categories?select=*&order=sort_order.asc") ]);
+    store.products=normalize(prods);
+    store.categories=(cats||[]).filter(c=>c.active!==false); if(!store.categories.length) store.categories=DEFAULT_CATS.slice();
+    store.loaded=true;
+  }catch(e){ store.products=SEED.map(s=>({...s,active:true,image:""})); store.categories=DEFAULT_CATS.slice(); store.loaded=true; toast("Offline - samples"); }
+}
+async function reloadProducts(){ try{ store.products=normalize(await sbGet("rw_products?select=*&order=sort_order.asc,created_at.asc")); }catch(e){} }
+async function reloadCategories(){ try{ const c=await sbGet("rw_categories?select=*&order=sort_order.asc"); store.categories=(c||[]).filter(x=>x.active!==false); }catch(e){} }
+
+function shopProducts(){ return store.products.filter(p=>p.active); }
+const catOf=id=>store.categories.find(c=>c.id===id)||(id==='wholesale'?WHOLESALE:null);
+const catIcon=id=>(catOf(id)||{}).icon||"box";
+function catName(id){ const c=catOf(id); if(!c) return id; if(LANG!=="en" && CAT_I18N[id] && CAT_I18N[id][LANG]) return CAT_I18N[id][LANG]; if(LANG!=="en") return P(c.name); return c.name; }
+function homeCats(){ return [...store.categories,WHOLESALE]; }
+
+/* ============ HELPERS ============ */
+const money=n=>CONFIG.currency+Number(n||0).toLocaleString('en-IN');
+const byId=id=>store.products.find(p=>p.id===id);
+function subsFor(cat){ return [...new Set(shopProducts().filter(p=>p.cat===cat&&p.sub).map(p=>p.sub))]; }
+function productSizes(p){ return (p.sizes&&p.sizes.length)?p.sizes:(p.age?[p.age]:[]); }
+function sortSizes(arr){ const ord=s=>{ const m=/(\d+)\s*year/i.exec(s); if(m) return +m[1]; if(/baby/i.test(s)) return 0; if(/free/i.test(s)) return 900; const g={S:101,M:102,L:103,XL:104,XXL:105}; return g[s]||500; }; return [...arr].sort((a,b)=>ord(a)-ord(b)); }
+function toast(msg){ const el=document.getElementById("toast"); el.textContent=msg; el.classList.add("show"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("show"),2000); }
+function escapeHtml(s){ return String(s==null?"":s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function sizeLabel(a){ if(!a) return ""; if(LANG==="en") return a; let s=a.replace("Years", LANG==="hi"?"साल":"વર્ષ").replace("Adult Free Size", LANG==="hi"?"फ्री साइज़":"ફ્રી સાઇઝ").replace("Baby", LANG==="hi"?"बेबी":"બેબી"); return s; }
+function thumbHTML(p){
+  const img=(p.images&&p.images[0])||p.image;
+  if(img) return `<img src="${escapeHtml(img)}" alt="${escapeHtml(p.title)}" loading="lazy" onerror="this.style.display='none'"/>`;
+  const c=(p.colors&&p.colors[0])||"#14352c";
+  return `<div class="ph" style="background-color:${c}0f; background-image:${patternURI(c)}; background-position:center; color:${c}">${icon(catIcon(p.cat),'')}</div>`;
+}
+
+/* ============ CART (variant-aware) ============ */
+function cartKey(id,size,color){ return id+'|'+(size||'')+'|'+(color||''); }
+function cartCount(){ return store.cart.reduce((s,i)=>s+i.qty,0); }
+function cartTotal(){ return store.cart.reduce((s,i)=>{ const p=byId(i.id); return s+(p?p.price*i.qty:0); },0); }
+function cartQtyFor(id,size,color){ const it=store.cart.find(i=>i.id===id&&(i.size||'')===(size||'')&&(i.color||'')===(color||'')); return it?it.qty:0; }
+function addToCart(id,qty=1,size="",color=""){ const p=byId(id); if(!p||p.stock<=0){ toast(t('outstock')); return; } const it=store.cart.find(i=>i.id===id&&(i.size||'')===(size||'')&&(i.color||'')===(color||'')); if(it) it.qty+=qty; else store.cart.push({id,qty,size,color}); persist(); updateBadges(); toast(t('added')); render(); }
+function setQtyLine(id,size,color,qty){ const it=store.cart.find(i=>i.id===id&&(i.size||'')===(size||'')&&(i.color||'')===(color||'')); if(!it){ if(qty>0) addToCart(id,qty,size,color); return; } it.qty=qty; if(it.qty<=0) store.cart=store.cart.filter(i=>i!==it); persist(); updateBadges(); render(); }
+function toggleWish(id){ if(store.wishlist.includes(id)) store.wishlist=store.wishlist.filter(x=>x!==id); else store.wishlist.push(id); persist(); render(); }
+const isWished=id=>store.wishlist.includes(id);
+function trackRecent(id){ store.recent=[id,...store.recent.filter(x=>x!==id)].slice(0,8); persist(); }
+
+/* ============ NAV ============ */
+function go(view,opts={}){ store.view=view;
+  if(opts.cat!==undefined) store.filterCat=opts.cat; if(opts.sub!==undefined) store.filterSub=opts.sub; if(opts.age!==undefined) store.filterAge=opts.age;
+  if(view==="home"){ store.filterCat=store.filterSub=store.filterAge=null; store.search=""; const si=document.getElementById("searchInput"); if(si) si.value=""; }
+  if(view!=="admin"&&location.hash==="#admin") history.replaceState(null,"",location.pathname);
+  window.scrollTo(0,0); render();
+}
+function onSearch(v){ store.search=v.trim().toLowerCase(); if(store.search&&store.view!=="search") store.view="search"; if(!store.search&&store.view==="search") store.view="home"; render(); }
+function matchesSearch(p){ if(!store.search) return true; return [p.title,p.cat,p.sub,p.age,p.fabric,catOf(p.cat)&&catOf(p.cat).name,(p.colors||[]).join(" ")].join(" ").toLowerCase().includes(store.search); }
+
+/* ============ RENDER ============ */
+const app=document.getElementById("app");
+function render(){
+  updateBadges();
+  let html="";
+  switch(store.view){
+    case "home":html=viewHome();break; case "categories":html=viewCategories();break; case "category":html=viewCategory();break;
+    case "age":html=viewAge();break; case "products":html=viewProducts();break; case "detail":html=viewDetail();break;
+    case "cart":html=viewCart();break; case "wishlist":html=viewWishlist();break; case "search":html=viewSearch();break;
+    case "wholesale":html=viewWholesale();break; case "admin":html=viewAdmin();break; default:html=viewHome();
+  }
+  app.innerHTML=html;
+  const adminMode = store.view==="admin";
+  const fabs=document.querySelector('.fabs'); if(fabs) fabs.style.display=adminMode?'none':'';
+  const lb=document.getElementById('langBtn'); if(lb) lb.style.display=adminMode?'none':'';
+  if(LANG!=="en" && pendingTr.size) flushTr();
+}
+
+function cardAdd(p){
+  const q=cartQtyFor(p.id,"","");
+  if(p.stock<=0) return `<button class="add-btn oos" onclick="notifyMe('${p.id}')">${icon('bell')} ${t('notify')}</button>`;
+  if(q>0) return `<div class="card-step"><button onclick="event.stopPropagation();setQtyLine('${p.id}','','',${q-1})">${icon('minus')}</button><span>${q}</span><button onclick="event.stopPropagation();setQtyLine('${p.id}','','',${q+1})">${icon('plus')}</button></div>`;
+  return `<button class="add-btn" onclick="event.stopPropagation();addToCart('${p.id}',1,'','')">${icon('plus')} ${t('add')}</button>`;
+}
+function productCard(p){
+  return `<div class="prod-card">
+    <div class="prod-thumb" onclick="openDetail('${p.id}')">${thumbHTML(p)}
+      <button class="wish-btn ${isWished(p.id)?'on':''}" onclick="event.stopPropagation();toggleWish('${p.id}')">${isWished(p.id)?iconFill('heart'):icon('heart')}</button>
+    </div>
+    <div class="prod-body">
+      <div class="prod-title" onclick="openDetail('${p.id}')">${escapeHtml(P(p.title))}</div>
+      ${(()=>{ const ps=productSizes(p); return ps.length?`<div class="prod-meta">${escapeHtml(sizeLabel(ps[0]))}${ps.length>1?' +':''}</div>`:''; })()}
+      <div class="prod-price-row"><span class="prod-price">${money(p.price)}</span>${p.mrp>p.price?`<span class="prod-mrp">${money(p.mrp)}</span>`:''}</div>
+      ${cardAdd(p)}
+    </div></div>`;
+}
+function catCard(c){ return `<div class="cat-card" onclick="${c.special?"go('wholesale')":`openCategory('${c.id}')`}"><div class="cat-ic">${icon(c.icon)}</div><div class="name">${escapeHtml(catName(c.id))}</div></div>`; }
+function skeleton(){ return `<div class="hero" style="min-height:150px"></div><div class="section-head"><h3>${t('loading')}</h3></div><div class="skel-grid">${Array(4).fill('<div class="skel"></div>').join("")}</div>`; }
+
+function viewHome(){
+  if(!store.loaded) return skeleton();
+  const list=shopProducts();
+  const popular=[...list].sort((a,b)=>b.stars-a.stars).slice(0,4);
+  const fresh=[...list].sort((a,b)=>String(b.created||'').localeCompare(String(a.created||''))).slice(0,4);
+  const recent=store.recent.map(byId).filter(p=>p&&p.active).slice(0,4);
+  return `
+    <div class="hero"><div class="pattern" style="background-image:${patternURI('#f4efe4')}"></div>
+      <div class="hero-content"><h2>${t('hero')}</h2><a class="hero-cta" onclick="go('categories')">${t('shop_now')} ${icon('arrow')}</a></div></div>
+    <div class="section-head"><h3>${t('categories')}</h3></div>
+    <div class="cat-grid">${homeCats().map(catCard).join("")}</div>
+    ${popular.length?`<div class="section-head">${icon('star')}<h3>${t('popular')}</h3></div><div class="prod-grid">${popular.map(productCard).join("")}</div>`:''}
+    ${fresh.length?`<div class="section-head">${icon('spark')}<h3>${t('newarr')}</h3></div><div class="prod-grid">${fresh.map(productCard).join("")}</div>`:''}
+    ${recent.length?`<div class="section-head">${icon('back')}<h3>${t('recent')}</h3></div><div class="prod-grid">${recent.map(productCard).join("")}</div>`:''}
+    <div class="section-head">${icon('phone')}<h3>${t('contact')}</h3></div>
+    <div class="contact-row">
+      <a class="contact-card" href="https://wa.me/${CONFIG.whatsapp}" target="_blank">${icon('whatsapp')}${t('whatsapp')}</a>
+      <a class="contact-card" href="tel:+${CONFIG.callNumber}">${icon('phone')}${t('call')}</a>
+    </div>
+    <div class="site-footer">${CONFIG.businessName} &middot; ${CONFIG.city}<br/><button onclick="openAdmin()">${icon('gear')} ${t('admin')}</button></div>`;
+}
+function viewCategories(){ return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div><div class="page-h">${t('shop_title')}</div><div class="cat-grid">${homeCats().map(catCard).join("")}</div>`; }
+function openCategory(catId){ const subs=subsFor(catId); if(subs.length) go("category",{cat:catId,sub:null,age:null}); else go("products",{cat:catId,sub:null,age:null}); }
+function viewCategory(){ const subs=subsFor(store.filterCat);
+  return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div>
+    <div class="page-h">${escapeHtml(catName(store.filterCat))}</div><div class="page-sub">${t('choose_type')}</div>
+    <div class="sub-list">${subs.map(s=>`<div class="sub-row" onclick='openSub("${store.filterCat}",${JSON.stringify(s)})'><span class="t">${escapeHtml(P(s))}</span>${icon('arrow')}</div>`).join("")}</div>`;
+}
+function openSub(catId,sub){ const rel=shopProducts().filter(p=>p.cat===catId&&p.sub===sub); const sizes=[...new Set(rel.flatMap(productSizes))]; if(sizes.length>1) go("age",{cat:catId,sub,age:null}); else go("products",{cat:catId,sub,age:null}); }
+function viewAge(){
+  const rel=shopProducts().filter(p=>p.cat===store.filterCat && (!store.filterSub||p.sub===store.filterSub));
+  let list=sortSizes([...new Set(rel.flatMap(productSizes))]);
+  if(!list.length){ const isWomen=/women/i.test(store.filterSub||""); list=isWomen?AGE_ADULT:AGE_KIDS.concat(["Adult Free Size"]); }
+  return `<div class="back-bar"><a class="back-btn" onclick="go('category',{cat:'${store.filterCat}'})">${icon('back')} ${escapeHtml(catName(store.filterCat))}</a></div>
+    <div class="page-h">${escapeHtml(P(store.filterSub)||catName(store.filterCat))}</div><div class="page-sub">${t('choose_size')}</div>
+    <div class="age-grid">${list.map(a=>{ const yr=/(\d+)\s*year/i.exec(a); const main=yr?yr[1]:sizeLabel(a); const sub=yr?(LANG==='en'?'yr':sizeLabel('Years')):''; return `<div class="age-card" onclick='go("products",{cat:"${store.filterCat}",sub:${JSON.stringify(store.filterSub||"")},age:${JSON.stringify(a)}})'>${escapeHtml(main)}<small>${sub}</small></div>`; }).join("")}</div>
+    <div style="margin-top:14px"><button class="btn-outline" onclick='go("products",{cat:"${store.filterCat}",sub:${JSON.stringify(store.filterSub||"")},age:null})'>${t('show_all')}</button></div>`;
+}
+function filteredProducts(){ let list=shopProducts().filter(p=>{ if(store.filterCat&&p.cat!==store.filterCat) return false; if(store.filterSub&&p.sub!==store.filterSub) return false; if(store.filterAge&&!productSizes(p).includes(store.filterAge)) return false; return true; });
+  switch(store.sort){ case "low":list.sort((a,b)=>a.price-b.price);break; case "high":list.sort((a,b)=>b.price-a.price);break; case "popular":list.sort((a,b)=>b.stars-a.stars);break; } return list; }
+function viewProducts(){ const list=filteredProducts(); const backTo=subsFor(store.filterCat).length?`go('category',{cat:'${store.filterCat}'})`:"go('home')";
+  return `<div class="back-bar"><a class="back-btn" onclick="${backTo}">${icon('back')} ${t('back')}</a></div>
+    <div class="page-h">${escapeHtml(catName(store.filterCat))}</div>
+    <div class="page-sub">${[P(store.filterSub),sizeLabel(store.filterAge)].filter(Boolean).join(' · ')||t('all')} · ${list.length}</div>
+    <div class="chips">${[['featured',t('all')],['low','₹ ↓'],['high','₹ ↑'],['popular',t('popular')]].map(([v,l])=>`<div class="chip ${store.sort===v?'active':''}" onclick="setSort('${v}')">${l}</div>`).join("")}</div>
+    ${list.length?`<div class="prod-grid">${list.map(productCard).join("")}</div>`:`<div class="empty">${icon('search','')}${t('nothing')}</div>`}`;
+}
+function setSort(s){ store.sort=s; render(); }
+
+/* ---------- DETAIL (compact, variant selectors) ---------- */
+let pdSize="", pdColor="", pdImg=0, pdQty=1;
+function openDetail(id){ trackRecent(id); const p=byId(id); pdSize=(p&&productSizes(p)[0])||""; pdColor=(p&&p.colors&&p.colors[0])||""; pdImg=0; pdQty=1; store._detailId=id; go("detail"); }
+function viewDetail(){ const p=byId(store._detailId); if(!p) return viewHome(); const oos=p.stock<=0; const imgs=(p.images&&p.images.length)?p.images:(p.image?[p.image]:[]); const ps=productSizes(p);
+  const mainImg = imgs.length?`<img src="${escapeHtml(imgs[pdImg]||imgs[0])}" onerror="this.style.display='none'"/>`:`<div class="ph">${icon(catIcon(p.cat),'')}</div>`;
+  const inCartQ=cartQtyFor(p.id,pdSize,pdColor);
+  return `<div class="back-bar"><a class="back-btn" onclick="go('products',{cat:'${p.cat}'})">${icon('back')} ${escapeHtml(catName(p.cat))}</a></div>
+    <div class="pd">
+      <div>
+        <div class="pd-main">${mainImg}</div>
+        ${imgs.length>1?`<div class="pd-thumbs" style="margin-top:10px">${imgs.map((im,i)=>`<div class="t ${i===pdImg?'on':''}" onclick="pdImg=${i};render()"><img src="${escapeHtml(im)}"/></div>`).join("")}</div>`:''}
+      </div>
+      <div class="pd-info">
+        <div class="prod-meta">${escapeHtml(catName(p.cat))}</div>
+        <h2>${escapeHtml(P(p.title))}</h2>
+        <div style="color:var(--gold);font-size:14px">${"★".repeat(p.stars)}${"☆".repeat(5-p.stars)}</div>
+        <div class="pd-price-row"><span class="pd-price">${money(p.price)}</span>${p.mrp>p.price?`<span class="prod-mrp" style="font-size:15px">${money(p.mrp)}</span>`:''}<span style="margin-left:auto;font-size:13px;font-weight:600;color:${oos?'var(--danger)':'var(--accent-2)'}">${oos?t('outstock'):t('available')}</span></div>
+        ${ps.length>1?`<div class="var-lbl">${t('size')}</div><div class="size-chips">${ps.map(s=>`<div class="size-chip ${pdSize===s?'on':''}" onclick="pdSize=${JSON.stringify(s)};render()">${escapeHtml(sizeLabel(s))}</div>`).join("")}</div>`:(ps.length===1?`<div class="var-lbl">${t('size')}: <span style="color:var(--ink)">${escapeHtml(sizeLabel(ps[0]))}</span></div>`:'')}
+        ${(p.colors&&p.colors.length)?`<div class="var-lbl">${t('colour')}</div><div class="colors">${p.colors.map(c=>`<div class="color-dot ${pdColor===c?'on':''}" style="background:${c}" onclick="pdColor='${c}';render()"></div>`).join("")}</div>`:''}
+        ${oos?`<div style="height:12px"></div><button class="btn-primary" onclick="notifyMe('${p.id}')">${icon('bell')} ${t('notify')}</button>`
+          :`<div class="qty-row"><span style="font-weight:600">${t('qty')}</span><div class="qty-ctrl"><button onclick="pdQty=Math.max(1,pdQty-1);render()">${icon('minus')}</button><span>${pdQty}</span><button onclick="pdQty++;render()">${icon('plus')}</button></div>${inCartQ?`<span style="font-size:12px;color:var(--ink-soft)">(${inCartQ} ${t('cart')})</span>`:''}</div>
+            <button class="btn-primary" onclick="addToCart('${p.id}',${'pdQty'?pdQty:1},pdSize,pdColor)">${icon('cart')} ${t('add_cart')}</button>`}
+        ${p.fabric?`<div class="pd-specs"><div class="row"><span>${t('fabric')}</span><span>${escapeHtml(P(p.fabric))}</span></div></div>`:''}
+        ${p.desc?`<p style="font-size:13.5px;color:var(--ink-soft);margin:10px 0 0">${escapeHtml(P(p.desc))}</p>`:''}
+        <div style="height:10px"></div><button class="btn-outline" onclick="shareProduct('${p.id}')">${icon('share')} ${t('share')}</button>
+      </div>
+    </div>`;
+}
+
+/* ---------- CART ---------- */
+function viewCart(){
+  if(!store.cart.length) return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('back')}</a></div><div class="empty">${icon('cart','')}${t('cart_empty')}<br/><br/><button class="btn-primary" style="max-width:220px;margin:0 auto" onclick="go('categories')">${t('shop_now')}</button></div>`;
+  const total=cartTotal();
+  return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('back')}</a></div>
+    <div class="page-h">${t('cart')}</div><div class="page-sub">${cartCount()} ${cartCount()!==1?t('items'):t('item')}</div>
+    ${store.cart.map(it=>{ const p=byId(it.id); if(!p) return ''; const meta=[sizeLabel(it.size||productSizes(p)[0]||''), it.color?`<span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:${it.color};vertical-align:middle;border:1px solid #0002"></span>`:''].filter(Boolean).join(' · ');
+      return `<div class="cart-item"><div class="cart-thumb">${thumbHTML(p)}</div>
+        <div class="cart-info"><h4>${escapeHtml(P(p.title))}</h4><div class="m">${meta}</div>
+          <div class="cart-qc"><div class="qty-ctrl"><button onclick='setQtyLine("${p.id}",${JSON.stringify(it.size||"")},${JSON.stringify(it.color||"")},${it.qty-1})'>${icon('minus')}</button><span>${it.qty}</span><button onclick='setQtyLine("${p.id}",${JSON.stringify(it.size||"")},${JSON.stringify(it.color||"")},${it.qty+1})'>${icon('plus')}</button></div>
+          <button class="cart-remove" onclick='setQtyLine("${p.id}",${JSON.stringify(it.size||"")},${JSON.stringify(it.color||"")},0)'>${icon('trash')}</button></div></div>
+        <div class="cart-line-price">${money(p.price*it.qty)}</div></div>`; }).join("")}
+    <div class="summary"><div class="row total"><span>${t('total')}</span><span>${money(total)}</span></div></div>
+    <div class="page-h" style="font-size:18px">${t('your_details')}</div>
+    <div class="form-grid">
+      <div class="field full"><label>${t('name')}</label><input id="f_name" placeholder="${t('name')}"/></div>
+      <div class="field full"><label>${icon('phone')} ${t('mobile')}</label><input id="f_phone" type="tel" inputmode="numeric" placeholder="${t('mobile')}"/></div>
+      <div class="field full"><label>${icon('pin')} ${t('address')}</label><textarea id="f_addr" rows="2"></textarea></div>
+      <div class="field"><label>${t('city')}</label><input id="f_city" value="${CONFIG.city}"/></div>
+      <div class="field"><label>${t('pin')}</label><input id="f_pin" inputmode="numeric"/></div>
+    </div>
+    <div style="height:8px"></div>
+    <button class="btn-primary btn-wa" onclick="placeOrder()">${icon('whatsapp')} ${t('order_wa')}</button>
+    <div style="font-size:12px;color:var(--ink-soft);text-align:center;margin:10px 0 20px">${t('no_pay')}</div>`;
+}
+function placeOrder(){ const g=id=>(document.getElementById(id)||{}).value||"";
+  const name=g("f_name").trim(),phone=g("f_phone").trim(),addr=g("f_addr").trim(),city=g("f_city").trim()||CONFIG.city,pin=g("f_pin").trim();
+  let ok=true; [["f_name",name],["f_phone",phone],["f_addr",addr]].forEach(([id,v])=>{ const el=document.getElementById(id); if(!v){el.classList.add("err");ok=false;} else el.classList.remove("err"); });
+  if(!ok){ toast(t('fill_req')); return; }
+  if(!/^\d{10}$/.test(phone.replace(/\D/g,'').slice(-10))){ document.getElementById("f_phone").classList.add("err"); toast(t('mobile')); return; }
+  const total=cartTotal();
+  let msg=`Assalamualaikum.\nOrder\n\nName: ${name}\nMobile: ${phone}\n\nProducts\n`;
+  store.cart.forEach((it,i)=>{ const p=byId(it.id); if(!p) return; msg+=`${i+1}. ${p.title}\n`; const sz=it.size||productSizes(p)[0]||''; if(sz) msg+=`   Size: ${sz}\n`; if(it.color){ const nm=(PALETTE.find(c=>c.h.toLowerCase()===it.color.toLowerCase())||{}).n; msg+=`   Colour: ${nm||it.color}\n`; } msg+=`   Qty: ${it.qty} x ${money(p.price)} = ${money(p.price*it.qty)}\n`; });
+  msg+=`\nTotal: ${money(total)}\n\nAddress\n${addr}\n${city}${pin?` - ${pin}`:''}\n\nPlease confirm. Thank you.`;
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`,"_blank"); toast(t('order_wa'));
+}
+
+function viewWishlist(){ const list=store.wishlist.map(byId).filter(p=>p&&p.active);
+  return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div><div class="page-h">${t('saved')}</div>
+    ${list.length?`<div class="prod-grid">${list.map(productCard).join("")}</div>`:`<div class="empty">${icon('heart','')}${t('save_hint')}</div>`}`;
+}
+function viewSearch(){ const list=shopProducts().filter(matchesSearch);
+  return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div><div class="page-h">${t('search_t')}</div><div class="page-sub">"${escapeHtml(store.search)}" · ${list.length}</div>
+    ${list.length?`<div class="prod-grid">${list.map(productCard).join("")}</div>`:`<div class="empty">${icon('search','')}${t('no_match')}</div>`}`;
+}
+function viewWholesale(){ const cats=store.categories.map(c=>`<option value="${escapeHtml(c.name)}">${escapeHtml(catName(c.id))}</option>`).join("");
+  return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div>
+    <div class="wholesale-hero"><div class="pattern" style="background-image:${patternURI('#f4efe4')}"></div><h2>${t('wholesale')}</h2><p>${t('wholesale_sub')}</p></div>
+    <div class="form-grid">
+      <div class="field full"><label>${t('name')}</label><input id="w_name"/></div>
+      <div class="field"><label>${t('shop')}</label><input id="w_shop"/></div>
+      <div class="field"><label>${t('city')}</label><input id="w_city" value="${CONFIG.city}"/></div>
+      <div class="field full"><label>${icon('phone')} ${t('mobile')}</label><input id="w_phone" type="tel" inputmode="numeric"/></div>
+      <div class="field full"><label>${icon('layers')} ${t('prod_cat')}</label><select id="w_cat">${cats}<option value="Other">${t('other')}</option></select></div>
+      <div class="field full"><label>${t('monthly')}</label><input id="w_qty" placeholder="e.g. 500"/></div>
+    </div>
+    <div style="height:8px"></div>
+    <button class="btn-primary btn-wa" onclick="wholesaleInquiry()">${icon('whatsapp')} ${t('send_wa')}</button><div style="height:24px"></div>`;
+}
+function wholesaleInquiry(){ const g=id=>(document.getElementById(id)||{}).value||"";
+  const name=g("w_name").trim(),shop=g("w_shop").trim(),city=g("w_city").trim(),phone=g("w_phone").trim(),cat=g("w_cat"),qty=g("w_qty").trim();
+  if(!name||!city||!phone){ ["w_name","w_city","w_phone"].forEach(id=>{const el=document.getElementById(id); if(!el.value.trim())el.classList.add("err");}); toast(t('fill_req')); return; }
+  const m=`Assalamualaikum.\nWholesale Inquiry\n\nName: ${name}\nShop: ${shop||'-'}\nCity: ${city}\nPhone: ${phone}\nProduct Category: ${cat}\nMonthly need: ${qty||'-'}\n\nThank you.`;
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(m)}`,"_blank"); toast(t('send_wa'));
+}
+function notifyMe(id){ const p=byId(id); const m=`Assalamualaikum.\nNotify me when back in stock:\n${p.title}${p.age?` (${p.age})`:''}\nThank you.`; window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(m)}`,"_blank"); }
+function shareProduct(id){ const p=byId(id); const text=`${p.title} - ${money(p.price)}\nOrder at ${CONFIG.businessName}`; if(navigator.share){ navigator.share({title:p.title,text}).catch(()=>{}); } else { window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,"_blank"); } }
+
+/* ============ ADMIN ============ */
+function openAdmin(){ store.view="admin"; store.admin.form=null; store.admin.catAdding=false; store.admin.bulk=false; location.hash="#admin"; window.scrollTo(0,0); render(); }
+function viewAdmin(){
+  if(!store.admin.pass) return adminLogin();
+  if(store.admin.bulk) return adminBulkView();
+  if(store.admin.form) return adminFormView();
+  const all=store.products;
+  return `<div class="admin-wrap">
+    <div class="back-bar" style="justify-content:space-between"><a class="back-btn" onclick="go('home')">${icon('back')} Store</a><button class="back-btn" onclick="adminLogout()">${icon('lock')} Lock</button></div>
+    <div class="page-h">Admin</div>
+    <div class="admin-stats"><div class="stat-card"><div class="n">${all.length}</div><div class="l">Products</div></div><div class="stat-card"><div class="n">${all.filter(p=>p.active).length}</div><div class="l">Live</div></div><div class="stat-card"><div class="n">${store.categories.length}</div><div class="l">Categories</div></div></div>
+    <div class="admin-tabs"><button class="${store.admin.tab==='products'?'active':''}" onclick="adminTab('products')">${icon('box')} Products</button><button class="${store.admin.tab==='categories'?'active':''}" onclick="adminTab('categories')">${icon('layers')} Categories</button></div>
+    ${store.admin.tab==='products'?adminProducts():adminCategories()}
+    <div style="height:30px"></div></div>`;
+}
+function adminTab(t2){ store.admin.tab=t2; store.admin.catAdding=false; render(); }
+function adminProducts(){ const all=store.products;
+  return `<div style="display:flex;gap:8px"><button class="btn-primary" style="flex:1" onclick="adminNewProduct()">${icon('plus')} Add Product</button><button class="btn-outline" style="flex:0 0 auto;width:auto;padding:14px 16px" onclick="adminBulkStart()">${icon('list')} Bulk</button></div><div style="height:14px"></div>
+    ${all.map(adminProductRow).join("")||`<div class="empty">${icon('box','')}No products.</div>`}`;
+}
+function adminProductRow(p){ const stat=p.stock<=0?'<span class="pill-stat oos">Out</span>':(p.active?'<span class="pill-stat live">Live</span>':'<span class="pill-stat hidden">Hidden</span>');
+  return `<div class="admin-row ${p.active?'':'off'}"><div class="th">${thumbHTML(p)}</div>
+    <div class="meta"><h4>${escapeHtml(p.title)}</h4><p>${escapeHtml((catOf(p.cat)||{}).name||p.cat)} · ${money(p.price)} · stk ${p.stock} ${stat}</p></div>
+    <div class="acts"><button onclick='adminEditProduct("${p.id}")'>${icon('pencil')}</button><button class="del" onclick='adminDeleteProduct("${p.id}",${JSON.stringify(p.title)})'>${icon('trash')}</button></div></div>`;
+}
+function adminCategories(){
+  return `${store.admin.catAdding?adminCatAddForm():`<button class="btn-primary" onclick="adminCatAddStart()">${icon('plus')} Add Category</button>`}<div style="height:14px"></div>
+    ${store.categories.map(c=>{ const cnt=store.products.filter(p=>p.cat===c.id).length; return `<div class="cat-manage-row"><div class="ci">${icon(c.icon)}</div><div class="nm">${escapeHtml(c.name)}<div class="cnt">${cnt} product${cnt!==1?'s':''}</div></div><button class="del" onclick='adminDeleteCategory("${c.id}",${JSON.stringify(c.name)},${cnt})'>${icon('trash')}</button></div>`; }).join("")}`;
+}
+function adminCatAddStart(){ store.admin.catAdding=true; store.admin.newCat={name:"",icon:"box"}; render(); }
+function adminCatAddForm(){ const nc=store.admin.newCat;
+  return `<div style="background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:6px">
+    <div class="fld"><label>${icon('tag')} Category name</label><input style="width:100%;padding:13px;border:1px solid var(--line-dark);border-radius:10px;font-size:16px" value="${escapeHtml(nc.name)}" oninput="store.admin.newCat.name=this.value" placeholder="e.g. Prayer Mat"/></div>
+    <div class="fld"><label>${icon('spark')} Pick an icon</label><div class="icon-pick">${ICON_CHOICES.map(ic=>`<button class="${nc.icon===ic?'on':''}" onclick="store.admin.newCat.icon='${ic}';render()">${icon(ic)}</button>`).join("")}</div></div>
+    <div style="display:flex;gap:8px"><button class="btn-primary" style="flex:1" onclick="adminCatSave()">${icon('check')} Save</button><button class="btn-outline" style="flex:1" onclick="store.admin.catAdding=false;render()">Cancel</button></div></div>`;
+}
+async function adminCatSave(){ const nc=store.admin.newCat; if(!nc.name.trim()){ toast("Enter a name"); return; }
+  try{ await sbRpc("rw_add_category",{p_passcode:store.admin.pass,p:{name:nc.name.trim(),icon:nc.icon}}); await reloadCategories(); store.admin.catAdding=false; toast("Category added"); render(); }
+  catch(e){ toast(adminErr(e)); adminMaybeLogout(e); }
+}
+async function adminDeleteCategory(id,name,cnt){ if(cnt>0){ toast(`Move/delete ${cnt} product(s) first`); return; } if(!confirm(`Delete "${name}"?`)) return;
+  try{ await sbRpc("rw_delete_category",{p_passcode:store.admin.pass,p_id:id}); await reloadCategories(); toast("Deleted"); render(); }
+  catch(e){ toast(/has_products/.test(e.message)?"Category has products":adminErr(e)); adminMaybeLogout(e); }
+}
+function adminLogin(){ return `<div class="admin-login"><div class="lk">${icon('lock')}</div><h2 style="font-size:22px">Admin</h2><p style="color:var(--ink-soft);font-size:13px;margin:4px 0 16px">Enter passcode.</p><div class="field" style="text-align:left"><input id="adm_pass" type="password" placeholder="Passcode" onkeydown="if(event.key==='Enter')adminVerify()"/></div><div style="height:12px"></div><button class="btn-primary" onclick="adminVerify()">${icon('check')} Unlock</button><div style="height:10px"></div><button class="btn-outline" onclick="go('home')">Back</button></div>`; }
+async function adminVerify(){ const pass=(document.getElementById("adm_pass")||{}).value||""; if(!pass) return;
+  try{ const ok=await sbRpc("rw_check_pass",{p_passcode:pass}); if(ok===true){ store.admin.pass=pass; sessionStorage.setItem("rw_pass",pass); toast("Welcome"); render(); } else toast("Wrong passcode"); }
+  catch(e){ toast("Check connection"); }
+}
+function adminLogout(){ store.admin.pass=null; sessionStorage.removeItem("rw_pass"); go("home"); }
+function adminErr(e){ return /unauthorized/i.test(e.message)?"Session expired - unlock again":"Something went wrong"; }
+function adminMaybeLogout(e){ if(/unauthorized/i.test(e.message)){ store.admin.pass=null; sessionStorage.removeItem("rw_pass"); render(); } }
+
+/* ----- Image upload from gallery ----- */
+function pickImages(){ const inp=document.getElementById("fileInput"); inp.value=""; inp.onchange=async()=>{ const files=[...(inp.files||[])]; if(!files.length) return; store.admin.uploading=true; render();
+  for(const file of files){ try{ const b64=await fileToB64(file); const r=await fetch(UPLOAD_FN,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({passcode:store.admin.pass,dataBase64:b64,contentType:file.type,filename:file.name})}); const j=await r.json(); if(j.url){ store.admin.form.images.push(j.url); } else toast(j.error==='too_large'?"Image too large":"Upload failed"); }catch(e){ toast("Upload failed"); } }
+  store.admin.uploading=false; render(); }; inp.click();
+}
+function fileToB64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(String(r.result).split(",")[1]); r.onerror=rej; r.readAsDataURL(file); }); }
+function afRemoveImg(i){ store.admin.form.images.splice(i,1); render(); }
+
+/* ----- Product wizard (step-by-step) ----- */
+function blankForm(){ return { id:null, title:"", cat:(store.categories[0]||{}).id||"rumali", sub:"", age:"", sizes:[], fabric:"", price:"", mrp:"", stock:"10", colors:[], images:[], desc:"", active:true }; }
+function adminNewProduct(){ store.admin.editing=null; store.admin.form=blankForm(); store.admin.step=0; render(); pickImages(); }
+function adminEditProduct(id){ const p=byId(id); if(!p) return; store.admin.editing=id; store.admin.form={ id:p.id, title:p.title, cat:p.cat, sub:p.sub, age:p.age, sizes:(p.sizes&&p.sizes.length)?[...p.sizes]:(p.age?[p.age]:[]), fabric:p.fabric, price:String(p.price), mrp:p.mrp?String(p.mrp):"", stock:String(p.stock), colors:[...(p.colors||[])], images:[...(p.images||(p.image?[p.image]:[]))], desc:p.desc, active:p.active }; store.admin.step=0; render(); }
+function afSet(k,v){ store.admin.form[k]=v; render(); }
+function afInput(k,v){ store.admin.form[k]=v; }
+function afToggle(k,v){ const a=store.admin.form[k]; const i=a.indexOf(v); if(i>=0) a.splice(i,1); else a.push(v); render(); }
+function wizStep(d){ const f=store.admin.form; if(d>0){ if(store.admin.step===1 && !f.title.trim()){ toast("Enter product name"); return; } if(store.admin.step===2 && (f.price===""||isNaN(+f.price))){ toast("Enter a price"); return; } } store.admin.step=Math.max(0,Math.min(3,store.admin.step+d)); window.scrollTo(0,0); render(); }
+function adminFormView(){ const f=store.admin.form, isNew=!store.admin.editing, step=store.admin.step;
+  const stepsBar=`<div class="wiz-steps">${[0,1,2,3].map(i=>`<div class="s ${i<=step?'on':''}"></div>`).join("")}</div>`;
+  const head=`<div class="back-bar" style="justify-content:space-between"><a class="back-btn" onclick="openAdmin()">${icon('back')} Admin</a><button class="back-btn" onclick="openAdmin()">${icon('x')} Close</button></div><div class="page-h">${isNew?'Add Product':'Edit Product'} <span style="font-size:14px;color:var(--ink-soft)">· ${step+1}/4</span></div>${stepsBar}`;
+  let body="";
+  if(step===0){ body=`<div class="fld"><label>${icon('camera')} Photos</label>
+      <div class="photo-tiles">${f.images.map((u,i)=>`<div class="pt"><img src="${escapeHtml(u)}"/><button class="rm" onclick="afRemoveImg(${i})">${icon('x')}</button></div>`).join("")}
+      <button class="photo-add" onclick="pickImages()" ${store.admin.uploading?'disabled':''}>${store.admin.uploading?'...':icon('upload')}${store.admin.uploading?'':'<span>Gallery</span>'}</button></div>
+      <p style="font-size:12px;color:var(--ink-soft);margin-top:8px">Pick photos from your phone. First photo is the main image.</p></div>`;
+  } else if(step===1){ const subSuggest=[...new Set(store.products.filter(p=>p.cat===f.cat&&p.sub).map(p=>p.sub))];
+    body=`<div class="fld"><label>${icon('tag')} Product name</label><input style="width:100%;padding:14px;border:1px solid var(--line-dark);border-radius:10px;font-size:17px;font-weight:600" value="${escapeHtml(f.title)}" oninput="afInput('title',this.value)" onchange="render()" placeholder="e.g. Diamond Net Rumali"/></div>
+      <div class="fld"><label>${icon('layers')} Category</label><div class="chip-wrap">${store.categories.map(c=>`<button class="chip chip-ic ${f.cat===c.id?'on':''}" onclick="afSet('cat','${c.id}')">${icon(c.icon)} ${escapeHtml(c.name)}</button>`).join("")}</div></div>
+      <div class="fld"><label>${icon('box')} Type (optional)</label><input list="subsug" style="width:100%;padding:13px;border:1px solid var(--line-dark);border-radius:10px;font-size:16px" value="${escapeHtml(f.sub)}" oninput="afInput('sub',this.value)" onchange="render()" placeholder="e.g. Diamond Rumali"/><datalist id="subsug">${subSuggest.map(s=>`<option value="${escapeHtml(s)}">`).join("")}</datalist></div>
+      <div class="fld"><label>${icon('rumali')} Size / Age (choose one or more)</label><div class="chip-wrap">${SIZE_CHOICES.map(s=>`<button class="chip ${f.sizes.includes(s)?'on':''}" onclick="afToggle('sizes',${JSON.stringify(s)})">${escapeHtml(s.replace(' Years','y'))}</button>`).join("")}</div><p style="font-size:12px;color:var(--ink-soft);margin-top:6px">These show as age/size to customers. Pick many, or leave empty for one-size.</p></div>
+      <div class="fld"><label>${icon('spark')} Colours</label><div class="swatch-wrap">${PALETTE.map(c=>`<div class="swatch ${f.colors.includes(c.h)?'on':''}" style="background:${c.h}" title="${c.n}" onclick="afToggle('colors','${c.h}')">${f.colors.includes(c.h)?`<span class="tick">${icon('check')}</span>`:''}</div>`).join("")}</div></div>`;
+  } else if(step===2){ body=`<div class="form-grid">
+      <div class="field"><label>${icon('rupee')} Price</label><input inputmode="numeric" value="${escapeHtml(f.price)}" oninput="afInput('price',this.value)" placeholder="120"/></div>
+      <div class="field"><label>MRP</label><input inputmode="numeric" value="${escapeHtml(f.mrp)}" oninput="afInput('mrp',this.value)" placeholder="150"/></div>
+      <div class="field"><label>${icon('box')} Stock</label><input inputmode="numeric" value="${escapeHtml(f.stock)}" oninput="afInput('stock',this.value)" placeholder="10"/></div>
+      <div class="field"><label>Fabric</label><input value="${escapeHtml(f.fabric)}" oninput="afInput('fabric',this.value)" placeholder="Cotton"/></div>
+      <div class="field full"><label>Description (optional)</label><textarea style="min-height:64px" oninput="afInput('desc',this.value)">${escapeHtml(f.desc)}</textarea></div></div>
+      <div class="fld" style="margin-top:12px"><label>${icon('eye')} Show in store</label><div class="toggle-row"><button class="chip ${f.active?'on':''}" onclick="afSet('active',true)">${icon('check')} Show</button><button class="chip ${!f.active?'on':''}" onclick="afSet('active',false)">${icon('eyeoff')} Hide</button></div></div>`;
+  } else { const prev={...f,price:+f.price||0,mrp:+f.mrp||0,stars:5,stock:+f.stock||0,age:(f.sizes&&f.sizes[0])||""}; body=`<div class="fld"><label>${icon('eye')} Preview</label><div style="max-width:180px">${productCardStatic(prev)}</div></div>
+      <p style="font-size:13px;color:var(--ink-soft)">Check everything looks right, then save.</p>`;
+  }
+  const nav=`<div class="wiz-nav">${step>0?`<button class="btn-outline" onclick="wizStep(-1)">${icon('back')} Back</button>`:''}${step<3?`<button class="btn-primary" onclick="wizStep(1)">Next ${icon('arrow')}</button>`:`<button class="btn-primary" id="a_save" onclick="adminSaveProduct()">${icon('check')} ${isNew?'Add Product':'Save'}</button>`}</div>`;
+  const delBtn=(!isNew&&step===3)?`<div style="height:10px"></div><button class="btn-primary btn-danger" onclick='adminDeleteProduct("${f.id}",${JSON.stringify(f.title)})'>${icon('trash')} Delete</button>`:'';
+  return `<div class="admin-wrap">${head}${body}${nav}${delBtn}<div style="height:30px"></div></div>`;
+}
+function productCardStatic(p){ return `<div class="prod-card"><div class="prod-thumb">${thumbHTML(p)}</div><div class="prod-body"><div class="prod-title">${escapeHtml(p.title||'Product name')}</div>${p.age?`<div class="prod-meta">${p.age}</div>`:''}<div class="prod-price-row"><span class="prod-price">${money(p.price)}</span>${p.mrp>p.price?`<span class="prod-mrp">${money(p.mrp)}</span>`:''}</div></div></div>`; }
+async function adminSaveProduct(){ const f=store.admin.form;
+  if(!f.title.trim()){ toast("Enter product name"); store.admin.step=1; render(); return; }
+  if(f.price===""||isNaN(+f.price)){ toast("Enter a price"); store.admin.step=2; render(); return; }
+  const data={ category:f.cat, subcategory:(f.sub||"").trim(), age:(f.sizes&&f.sizes[0])||"", title:f.title.trim(), description:(f.desc||"").trim(), price:+f.price, mrp:+(f.mrp||0), fabric:(f.fabric||"").trim(), colors:f.colors, sizes:f.sizes, images:f.images, image_url:f.images[0]||"", stock:+(f.stock||0), active:!!f.active };
+  const btn=document.getElementById("a_save"); if(btn){ btn.disabled=true; btn.textContent="Saving..."; }
+  try{ if(store.admin.editing) await sbRpc("rw_update_product",{p_passcode:store.admin.pass,p_id:store.admin.editing,p:data}); else await sbRpc("rw_add_product",{p_passcode:store.admin.pass,p:data});
+    await reloadProducts(); store.admin.form=null; toast(store.admin.editing?"Saved":"Product added"); render();
+  }catch(e){ if(btn){btn.disabled=false;} toast(adminErr(e)); adminMaybeLogout(e); }
+}
+async function adminDeleteProduct(id,title){ if(!confirm(`Delete "${title}"?`)) return;
+  try{ await sbRpc("rw_delete_product",{p_passcode:store.admin.pass,p_id:id}); await reloadProducts(); store.admin.form=null; toast("Deleted"); render(); }
+  catch(e){ toast(adminErr(e)); adminMaybeLogout(e); }
+}
+
+/* ----- Bulk add ----- */
+function adminBulkStart(){ store.admin.bulk=true; store.admin.bulkText=""; render(); }
+function adminBulkView(){
+  return `<div class="admin-wrap"><div class="back-bar"><a class="back-btn" onclick="store.admin.bulk=false;render()">${icon('back')} Admin</a></div>
+    <div class="page-h">Bulk Add Products</div>
+    <p style="font-size:13px;color:var(--ink-soft);margin:0 0 12px">One product per line. Separate fields with a comma:<br/><b>Name, Category, Price, MRP, Stock</b><br/>Category can be a name (Rumali) or blank for the first category.</p>
+    <textarea id="bulkText" style="width:100%;min-height:180px;padding:13px;border:1px solid var(--line-dark);border-radius:10px;font-size:14px;font-family:monospace" placeholder="Diamond Rumali, Rumali, 120, 150, 20&#10;Cotton Cap, Cap, 60, 80, 40" oninput="store.admin.bulkText=this.value">${escapeHtml(store.admin.bulkText)}</textarea>
+    <p id="bulkCount" style="font-size:13px;color:var(--accent-2);margin:8px 2px">${bulkParse(store.admin.bulkText).length} product(s) detected</p>
+    <button class="btn-primary" id="bulk_save" onclick="adminBulkSave()">${icon('check')} Add all</button>
+    <div style="height:10px"></div><button class="btn-outline" onclick="store.admin.bulk=false;render()">Cancel</button><div style="height:30px"></div></div>`;
+}
+function bulkParse(text){ const out=[]; (text||"").split(/\r?\n/).forEach(line=>{ if(!line.trim()) return; const parts=line.split(/[,\t]/).map(s=>s.trim());
+  const title=parts[0]; if(!title) return; const catRaw=parts[1]||""; const cat=store.categories.find(c=>c.id===catRaw.toLowerCase()||c.name.toLowerCase()===catRaw.toLowerCase()); const catId=cat?cat.id:((store.categories[0]||{}).id||"rumali");
+  const price=+(parts[2]||0)||0, mrp=+(parts[3]||0)||0, stock=parts[4]!==undefined&&parts[4]!==""?+parts[4]:10;
+  out.push({ category:catId, title, price, mrp, stock, active:true }); }); return out; }
+async function adminBulkSave(){ const items=bulkParse(store.admin.bulkText); if(!items.length){ toast("Nothing to add"); return; }
+  const btn=document.getElementById("bulk_save"); if(btn){ btn.disabled=true; btn.textContent="Adding..."; }
+  try{ const n=await sbRpc("rw_add_products",{p_passcode:store.admin.pass,items}); await reloadProducts(); store.admin.bulk=false; toast(`Added ${n} product(s)`); render(); }
+  catch(e){ if(btn){btn.disabled=false;} toast(adminErr(e)); adminMaybeLogout(e); }
+}
+
+/* ============ CHROME / INIT ============ */
+function updateBadges(){ const c=cartCount(); const nb=document.getElementById("navCartBadge"); if(nb){ nb.style.display=c?'grid':'none'; nb.textContent=c; }
+  ["Home","Cats","Wish","Cart"].forEach(n=>{ const el=document.getElementById("nav"+n); if(el) el.classList.remove("active"); });
+  const map={home:"Home",categories:"Cats",wishlist:"Wish",cart:"Cart"}; const a=map[store.view]; if(a){ const el=document.getElementById("nav"+a); if(el) el.classList.add("active"); }
+}
+function applyChrome(){
+  document.getElementById("brandMark").innerHTML=icon('moon');
+  document.getElementById("searchIcon").innerHTML=icon('search');
+  document.getElementById("brandTag").textContent=t('tag');
+  document.getElementById("searchInput").placeholder=t('search');
+  document.getElementById("langBtn").innerHTML=icon('globe')+`<span>${LANG_LABEL[LANG]}</span>`;
+  const nav={navHome:['home','nav_home'],navCats:['grid','nav_shop'],navWish:['heart','nav_saved'],navCart:['cart','nav_cart']};
+  Object.entries(nav).forEach(([id,[ic,key]])=>{ const b=document.getElementById(id); const badge=id==='navCart'?b.querySelector('.nav-badge'):null; b.innerHTML=icon(ic)+`<span>${t(key)}</span>`; if(badge) b.appendChild(badge); });
+  const wa=document.getElementById("fabWa"); wa.innerHTML=icon('whatsapp'); wa.href=`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent('Assalamualaikum')}`; wa.target="_blank";
+  const call=document.getElementById("fabCall"); call.innerHTML=icon('phone'); call.href=`tel:+${CONFIG.callNumber}`;
+}
+async function init(){ document.documentElement.lang=LANG; applyChrome(); if(location.hostname.startsWith("admin.")||location.hash==="#admin") store.view="admin"; render(); await loadData(); render(); }
+init();
+</script>
+</body>
+</html>
