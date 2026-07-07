@@ -718,8 +718,7 @@ function viewAdmin(){
   if(store.admin.form) return adminFormView();
   const all=store.products;
   return `<div class="admin-wrap">
-    <div class="back-bar" style="justify-content:space-between"><a class="back-btn" onclick="go('home')">${icon('back')} Store</a><button class="back-btn" onclick="adminLogout()">${icon('lock')} Lock</button></div>
-    <div class="page-h">Admin</div>
+    <div class="page-h" style="margin-top:10px">Admin</div>
     <div class="admin-stats"><div class="stat-card"><div class="n">${all.length}</div><div class="l">Products</div></div><div class="stat-card"><div class="n">${all.filter(p=>p.active).length}</div><div class="l">Live</div></div><div class="stat-card"><div class="n">${store.categories.length}</div><div class="l">Categories</div></div></div>
     <div class="admin-tabs"><button class="${store.admin.tab==='products'?'active':''}" onclick="adminTab('products')">${icon('box')} Products</button><button class="${store.admin.tab==='categories'?'active':''}" onclick="adminTab('categories')">${icon('layers')} Categories</button></div>
     ${store.admin.tab==='products'?adminProducts():adminCategories()}
