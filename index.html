@@ -18,7 +18,7 @@
   }
   * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html,body { margin:0; padding:0; }
-  body { font-family:'IBM Plex Sans','Noto Sans Devanagari','Noto Sans Gujarati',system-ui,sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; -webkit-font-smoothing:antialiased; padding-bottom:88px; }
+  body { font-family:'IBM Plex Sans','Noto Sans Devanagari','Noto Sans Gujarati',system-ui,sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; -webkit-font-smoothing:antialiased; padding-bottom:104px; }
   h1,h2,h3,h4 { font-weight:600; letter-spacing:-0.3px; margin:0; }
   button { font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
   img { max-width:100%; display:block; }
@@ -191,14 +191,14 @@
   .empty { text-align:center; padding:56px 20px; color:var(--ink-soft); }
   .empty svg { width:54px; height:54px; margin:0 auto 14px; opacity:.4; stroke-width:1.2; }
 
-  .fabs { position:fixed; right:15px; bottom:96px; z-index:45; display:flex; flex-direction:column; gap:12px; }
+  .fabs { position:fixed; right:15px; bottom:112px; z-index:45; display:flex; flex-direction:column; gap:12px; }
   .fab { width:54px; height:54px; border-radius:50%; display:grid; place-items:center; box-shadow:var(--shadow-lg); color:#fff; }
   .fab svg { width:26px; height:26px; }
   .fab.wa { background:#1f8f4e; } .fab.call { background:var(--accent); }
 
-  .bottom-nav { position:fixed; bottom:0; left:0; right:0; z-index:44; background:var(--surface); border-top:1px solid var(--line); display:flex; justify-content:space-around; padding:7px 0 max(7px,env(safe-area-inset-bottom)); }
-  .bottom-nav button { display:flex; flex-direction:column; align-items:center; gap:3px; font-size:10.5px; color:var(--ink-soft); flex:1; position:relative; }
-  .bottom-nav button svg { width:23px; height:23px; }
+  .bottom-nav { position:fixed; bottom:0; left:0; right:0; z-index:44; background:var(--surface); border-top:1px solid var(--line); display:flex; justify-content:space-around; padding:13px 0 max(13px,env(safe-area-inset-bottom)); box-shadow:0 -3px 14px rgba(60,40,25,.06); }
+  .bottom-nav button { display:flex; flex-direction:column; align-items:center; gap:5px; font-size:12.5px; font-weight:500; color:var(--ink-soft); flex:1; position:relative; }
+  .bottom-nav button svg { width:28px; height:28px; }
   .bottom-nav button.active { color:var(--accent); }
   .nav-badge { position:absolute; top:-3px; right:50%; margin-right:-22px; background:var(--danger); color:#fff; font-size:9px; font-weight:700; min-width:16px; height:16px; border-radius:8px; display:grid; place-items:center; padding:0 4px; }
 
@@ -302,7 +302,7 @@
   .trust-item h5 { margin:0; font-size:12.5px; font-weight:600; }
   .trust-item p { margin:1px 0 0; font-size:10.5px; color:var(--ink-soft); }
   /* Sticky cart bar */
-  .cart-bar { position:fixed; left:12px; right:12px; bottom:78px; z-index:43; background:var(--accent); color:#f3e7d3; border-radius:14px; box-shadow:var(--shadow-lg); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; }
+  .cart-bar { position:fixed; left:12px; right:12px; bottom:94px; z-index:43; background:var(--accent); color:#f3e7d3; border-radius:14px; box-shadow:var(--shadow-lg); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; }
   .cart-bar .l { display:flex; align-items:center; gap:10px; font-size:14px; }
   .cart-bar .l svg { width:20px; height:20px; }
   .cart-bar .r { display:flex; align-items:center; gap:8px; font-weight:700; font-size:15px; }
@@ -337,8 +337,7 @@
 <header class="top">
   <div class="top-inner">
     <div class="brand" onclick="go('home')"><div class="mark" id="brandMark"></div><div><h1>Rumaliwala</h1><p id="brandTag">Rumali &amp; Accessories</p></div></div>
-    <div class="search-wrap"><span class="si" id="searchIcon"></span><input id="searchInput" type="search" placeholder="Search..." oninput="onSearch(this.value)" /></div>
-    <button class="lang-btn" id="langBtn" onclick="cycleLang()"></button>
+    <button class="lang-btn" id="langBtn" onclick="cycleLang()" style="margin-left:auto"></button>
   </div>
 </header>
 <main id="app"></main>
@@ -441,6 +440,9 @@ Object.assign(T.gu, {
   order_no:"ઓર્ડર નંબર", view_cart:"કાર્ટ જુઓ", cart_items:"કાર્ટમાં",
   t_quality:"પ્રીમિયમ ક્વોલિટી", t_pack:"ડિસ્ક્રીટ પેકેજિંગ", t_return:"સરળ રિટર્ન", t_support:"સપોર્ટ",
 });
+Object.assign(T.en,{business_name:"Business Name"});
+Object.assign(T.hi,{business_name:"व्यवसाय का नाम"});
+Object.assign(T.gu,{business_name:"વ્યવસાયનું નામ"});
 const CAT_I18N = {
   rumali:{hi:"रुमाली",gu:"રૂમાલી"}, nose:{hi:"नोज़ पीस",gu:"નોઝ પીસ"}, burkha:{hi:"बुरखा",gu:"બુરખા"},
   gloves:{hi:"दस्ताने",gu:"ગ્લવ્ઝ"}, mask:{hi:"मास्क",gu:"માસ્ક"}, cap:{hi:"टोपी",gu:"ટોપી"},
@@ -538,6 +540,7 @@ const store = {
   cart:load("rw_cart",[]), wishlist:load("rw_wish",[]), recent:load("rw_recent",[]),
   view:"home", filterCat:null, filterSub:null, filterAge:null, search:"", sort:"featured", _detailId:null,
   admin:{ pass:sessionStorage.getItem("rw_pass")||null, tab:"products", form:null, editing:null, step:0, uploading:false, catAdding:false, newCat:{name:"",icon:"box"}, bulk:false, bulkText:"" },
+  ws:{ name:"", business:"", city:"Ahmedabad", phone:"", qty:"", cats:[] },
 };
 function load(k,d){ try{ return JSON.parse(localStorage.getItem(k))||d; }catch(e){ return d; } }
 function save(k,v){ localStorage.setItem(k,JSON.stringify(v)); }
@@ -623,7 +626,7 @@ function render(){
 }
 function updateCartBar(){ const bar=document.getElementById('cartBar'); if(!bar) return;
   const c=cartCount(); const hide=['cart','confirm','admin'].includes(store.view);
-  if(c>0 && !hide){ bar.style.display='flex'; bar.innerHTML=`<div class="l"><span class="cb-count">${c}</span> ${t('view_cart')}</div><div class="r">${money(cartTotal())} ${icon('arrow')}</div>`; document.body.style.paddingBottom='150px'; }
+  if(c>0 && !hide){ bar.style.display='flex'; bar.innerHTML=`<div class="l"><span class="cb-count">${c}</span> ${t('view_cart')}</div><div class="r">${money(cartTotal())} ${icon('arrow')}</div>`; document.body.style.paddingBottom='168px'; }
   else { bar.style.display='none'; document.body.style.paddingBottom=''; }
 }
 
@@ -679,7 +682,7 @@ function viewHome(){
       <a class="contact-card" href="https://wa.me/${CONFIG.whatsapp}" target="_blank">${icon('whatsapp')}${t('whatsapp')}</a>
       <a class="contact-card" href="tel:+${CONFIG.callNumber}">${icon('phone')}${t('call')}</a>
     </div>
-    <div class="site-footer">${CONFIG.businessName} &middot; ${CONFIG.city}<br/><button onclick="openAdmin()">${icon('gear')} ${t('admin')}</button></div>`;
+    <div class="site-footer">${CONFIG.businessName} &middot; ${CONFIG.city}</div>`;
 }
 function viewCategories(){ return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div><div class="page-h">${t('shop_title')}</div><div class="cat-grid">${homeCats().map(catCard).join("")}</div>`; }
 function openCategory(catId){ const subs=subsFor(catId); if(subs.length) go("category",{cat:catId,sub:null,age:null}); else go("products",{cat:catId,sub:null,age:null}); }
@@ -810,24 +813,29 @@ function viewSearch(){ const list=shopProducts().filter(matchesSearch);
   return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div><div class="page-h">${t('search_t')}</div><div class="page-sub">"${escapeHtml(store.search)}" · ${list.length}</div>
     ${list.length?`<div class="prod-grid">${list.map(productCard).join("")}</div>`:`<div class="empty">${icon('search','')}${t('no_match')}</div>`}`;
 }
-function viewWholesale(){ const cats=store.categories.map(c=>`<option value="${escapeHtml(c.name)}">${escapeHtml(catName(c.id))}</option>`).join("");
+function wsInput(k,v){ store.ws[k]=v; }
+function wsToggleCat(name){ const a=store.ws.cats; const i=a.indexOf(name); if(i>=0) a.splice(i,1); else a.push(name); render(); }
+function viewWholesale(){ if(!store.ws) store.ws={name:"",business:"",city:CONFIG.city,phone:"",qty:"",cats:[]};
+  const w=store.ws; const catNames=store.categories.map(c=>({id:c.id,name:c.name})).concat([{id:"__other",name:"Other"}]);
   return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div>
     <div class="wholesale-hero"><div class="pattern" style="background-image:${patternURI('#f4efe4')}"></div><h2>${t('wholesale')}</h2><p>${t('wholesale_sub')}</p></div>
     <div class="form-grid">
-      <div class="field full"><label>${t('name')}</label><input id="w_name"/></div>
-      <div class="field"><label>${t('shop')}</label><input id="w_shop"/></div>
-      <div class="field"><label>${t('city')}</label><input id="w_city" value="${CONFIG.city}"/></div>
-      <div class="field full"><label>${icon('phone')} ${t('mobile')}</label><input id="w_phone" type="tel" inputmode="numeric"/></div>
-      <div class="field full"><label>${icon('layers')} ${t('prod_cat')}</label><select id="w_cat">${cats}<option value="Other">${t('other')}</option></select></div>
-      <div class="field full"><label>${t('monthly')}</label><input id="w_qty" placeholder="e.g. 500"/></div>
+      <div class="field full"><label>${t('name')}</label><input id="w_name" value="${escapeHtml(w.name)}" oninput="wsInput('name',this.value)"/></div>
+      <div class="field"><label>${t('business_name')}</label><input id="w_business" value="${escapeHtml(w.business)}" oninput="wsInput('business',this.value)"/></div>
+      <div class="field"><label>${t('city')}</label><input id="w_city" value="${escapeHtml(w.city)}" oninput="wsInput('city',this.value)"/></div>
+      <div class="field full"><label>${icon('phone')} ${t('mobile')}</label><input id="w_phone" type="tel" inputmode="numeric" value="${escapeHtml(w.phone)}" oninput="wsInput('phone',this.value)"/></div>
     </div>
-    <div style="height:8px"></div>
+    <div class="fld" style="margin-top:6px"><label>${icon('layers')} ${t('prod_cat')}</label>
+      <div class="chip-wrap">${catNames.map(c=>`<button class="chip ${w.cats.includes(c.name)?'on':''}" onclick="wsToggleCat(${JSON.stringify(c.name)})">${escapeHtml(c.id==='__other'?t('other'):catName(c.id))}</button>`).join("")}</div></div>
+    <div class="field full"><label>${t('monthly')}</label><input id="w_qty" value="${escapeHtml(w.qty)}" oninput="wsInput('qty',this.value)" placeholder="e.g. 500"/></div>
+    <div style="height:12px"></div>
     <button class="btn-primary btn-wa" onclick="wholesaleInquiry()">${icon('whatsapp')} ${t('send_wa')}</button><div style="height:24px"></div>`;
 }
-function wholesaleInquiry(){ const g=id=>(document.getElementById(id)||{}).value||"";
-  const name=g("w_name").trim(),shop=g("w_shop").trim(),city=g("w_city").trim(),phone=g("w_phone").trim(),cat=g("w_cat"),qty=g("w_qty").trim();
-  if(!name||!city||!phone){ ["w_name","w_city","w_phone"].forEach(id=>{const el=document.getElementById(id); if(!el.value.trim())el.classList.add("err");}); toast(t('fill_req')); return; }
-  const m=`Assalamualaikum.\nWholesale Inquiry\n\nName: ${name}\nShop: ${shop||'-'}\nCity: ${city}\nPhone: ${phone}\nProduct Category: ${cat}\nMonthly need: ${qty||'-'}\n\nThank you.`;
+function wholesaleInquiry(){ const w=store.ws||{};
+  const name=(w.name||"").trim(),business=(w.business||"").trim(),city=(w.city||"").trim(),phone=(w.phone||"").trim(),qty=(w.qty||"").trim();
+  if(!name||!city||!phone){ [["w_name",name],["w_city",city],["w_phone",phone]].forEach(([id,v])=>{const el=document.getElementById(id); if(el&&!v)el.classList.add("err");}); toast(t('fill_req')); return; }
+  const cats=(w.cats&&w.cats.length)?w.cats.join(', '):'-';
+  const m=`Assalamualaikum.\nWholesale Inquiry\n\nName: ${name}\nBusiness: ${business||'-'}\nCity: ${city}\nPhone: ${phone}\nProduct Category: ${cats}\nMonthly need: ${qty||'-'}\n\nThank you.`;
   window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(m)}`,"_blank"); toast(t('send_wa'));
 }
 function notifyMe(id){ const p=byId(id); const m=`Assalamualaikum.\nNotify me when back in stock:\n${p.title}${p.age?` (${p.age})`:''}\nThank you.`; window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(m)}`,"_blank"); }
@@ -977,9 +985,7 @@ function updateBadges(){ const c=cartCount(); const nb=document.getElementById("
 function applyChrome(){
   const ab=document.getElementById("announceBar"); if(ab) ab.innerHTML=`${icon('spark')} ${t('free_delivery')}`;
   document.getElementById("brandMark").innerHTML='R';
-  document.getElementById("searchIcon").innerHTML=icon('search');
   document.getElementById("brandTag").textContent=t('tag');
-  document.getElementById("searchInput").placeholder=t('search');
   document.getElementById("langBtn").innerHTML=icon('globe')+`<span>${LANG_LABEL[LANG]}</span>`;
   const nav={navHome:['home','nav_home'],navCats:['grid','nav_shop'],navWish:['heart','nav_saved'],navCart:['cart','nav_cart']};
   Object.entries(nav).forEach(([id,[ic,key]])=>{ const b=document.getElementById(id); const badge=id==='navCart'?b.querySelector('.nav-badge'):null; b.innerHTML=icon(ic)+`<span>${t(key)}</span>`; if(badge) b.appendChild(badge); });
