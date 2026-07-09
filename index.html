@@ -915,7 +915,14 @@ function adminOrderRow(o){ const items=o.items||[]; const d=new Date(o.created_a
     <div class="order-items">${items.map(it=>`${escapeHtml(it.title)}${it.size?` (${escapeHtml(it.size)})`:''} × ${it.qty}`).join('<br/>')}</div>
     <div class="order-addr">${escapeHtml(o.address||'')}${o.city?', '+escapeHtml(o.city):''}${o.pin?' - '+escapeHtml(o.pin):''}</div>
     <div class="order-foot"><span>${dstr}</span><b>${money(o.total)}</b></div>
-    <div class="chips" style="padding:8px 0 0">${ORDER_STATUSES.map(s=>`<button class="chip ${o.status===s?'on':''}" onclick="setOrderStatus('${o.id}','${s}')">${s}</button>`).join("")}</div></div>`;
+    <button class="btn-primary btn-wa" style="padding:9px;font-size:13px;margin-top:9px" onclick="orderReplyWhatsApp('${o.id}')">${icon('whatsapp')} Reply on WhatsApp</button>
+    <div class="chips" style="padding:9px 0 0">${ORDER_STATUSES.map(s=>`<button class="chip ${o.status===s?'on':''}" onclick="setOrderStatus('${o.id}','${s}')">${s}</button>`).join("")}</div></div>`;
+}
+function orderReplyWhatsApp(id){ const o=store.admin.orders.find(x=>x.id===id); if(!o) return;
+  const phone='91'+(o.phone||'').replace(/[^0-9]/g,'').slice(-10);
+  const items=(o.items||[]).map((it,i)=>`${i+1}. ${it.title}${it.size?` (${it.size})`:''} x ${it.qty}`).join('\n');
+  const msg=`Assalamualaikum ${o.name||''},\nThank you for your order ${o.ref} from ${CONFIG.businessName}.\n\n${items}\n\nTotal: ${money(o.total)}\n\nWe will confirm availability and share delivery details shortly. JazakAllah khair.`;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,"_blank");
 }
 async function setOrderStatus(id,status){ try{ await sbRpc("rw_update_order_status",{p_passcode:store.admin.pass,p_id:id,p_status:status}); const o=store.admin.orders.find(x=>x.id===id); if(o)o.status=status; render(); toast("Updated"); }catch(e){ toast(adminErr(e)); adminMaybeLogout(e); } }
 function adminProducts(){ const all=store.products;
