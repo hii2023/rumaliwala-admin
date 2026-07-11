@@ -25,7 +25,8 @@
   }
   * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html,body { margin:0; padding:0; }
-  body { font-family:'IBM Plex Sans','Noto Sans Devanagari','Noto Sans Gujarati',system-ui,sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; -webkit-font-smoothing:antialiased; padding-bottom:104px; }
+  button, a, .chip, [onclick] { touch-action:manipulation; }
+  body { font-family:'IBM Plex Sans','Noto Sans Devanagari','Noto Sans Gujarati',system-ui,sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; -webkit-font-smoothing:antialiased; padding-bottom:104px; overscroll-behavior-y:contain; }
   h1,h2,h3,h4 { font-weight:600; letter-spacing:-0.3px; margin:0; }
   button { font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
   img { max-width:100%; display:block; }
@@ -253,7 +254,7 @@
   .admin-row .meta h4 { margin:0; font-size:15px; font-weight:600; }
   .admin-row .meta p { margin:2px 0 0; font-size:12px; color:var(--ink-soft); }
   .admin-row .acts { display:flex; gap:6px; }
-  .admin-row .acts button { width:38px; height:38px; border-radius:9px; border:1px solid var(--line-dark); display:grid; place-items:center; color:var(--ink-soft); }
+  .admin-row .acts button { width:44px; height:44px; border-radius:9px; border:1px solid var(--line-dark); display:grid; place-items:center; color:var(--ink-soft); }
   .admin-row .acts button svg { width:17px; height:17px; }
   .admin-row.off { opacity:.55; }
   .pill-stat { font-size:10px; font-weight:700; text-transform:uppercase; padding:2px 7px; border-radius:12px; }
@@ -280,6 +281,23 @@
   .photo-tiles .pt { width:88px; height:88px; border-radius:12px; overflow:hidden; background:var(--surface-2); position:relative; border:1px solid var(--line-dark); }
   .photo-tiles .pt img { width:100%; height:100%; object-fit:cover; }
   .photo-tiles .pt .rm { position:absolute; top:3px; right:3px; width:22px; height:22px; border-radius:50%; background:rgba(0,0,0,.6); color:#fff; display:grid; place-items:center; }
+  .photo-tiles .pt img { cursor:zoom-in; }
+  .photo-tiles .pt .pt-main { position:absolute; top:3px; left:3px; background:var(--gold); color:#3a2416; font-size:9px; font-weight:700; padding:2px 6px; border-radius:6px; }
+  .photo-tiles .pt .pt-move { position:absolute; bottom:0; left:0; right:0; display:flex; justify-content:space-between; background:rgba(0,0,0,.45); }
+  .photo-tiles .pt .pt-move button, .photo-tiles .pt .pt-move span { width:50%; height:22px; display:grid; place-items:center; color:#fff; }
+  .photo-tiles .pt .pt-move button svg { width:15px; height:15px; }
+  /* Lightbox */
+  .lightbox { position:fixed; inset:0; z-index:80; background:rgba(20,12,6,.92); display:flex; align-items:center; justify-content:center; }
+  .lightbox .lb-img { max-width:92vw; max-height:78vh; border-radius:10px; box-shadow:0 10px 50px rgba(0,0,0,.5); object-fit:contain; }
+  .lightbox .lb-close { position:absolute; top:16px; right:16px; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.15); color:#fff; display:grid; place-items:center; }
+  .lightbox .lb-close svg { width:24px; height:24px; }
+  .lightbox .lb-nav { position:absolute; top:50%; transform:translateY(-50%); width:46px; height:46px; border-radius:50%; background:rgba(255,255,255,.15); color:#fff; display:grid; place-items:center; }
+  .lightbox .lb-nav svg { width:24px; height:24px; }
+  .lightbox .lb-prev { left:12px; } .lightbox .lb-next { right:12px; }
+  .lightbox .lb-dots { position:absolute; bottom:76px; left:0; right:0; display:flex; justify-content:center; gap:6px; }
+  .lightbox .lb-dots span { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.4); } .lightbox .lb-dots span.on { background:#fff; }
+  .lightbox .lb-change { position:absolute; bottom:22px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; border:1.5px solid var(--gold); font-weight:600; font-size:14px; padding:11px 20px; border-radius:30px; display:inline-flex; align-items:center; gap:8px; }
+  .lightbox .lb-change svg { width:18px; height:18px; }
   .photo-tiles .pt .rm svg { width:13px; height:13px; }
   .photo-add { width:88px; height:88px; border-radius:12px; border:2px dashed var(--line-dark); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; color:var(--ink-soft); font-size:11px; font-weight:600; background:var(--surface); }
   .photo-add svg { width:26px; height:26px; }
@@ -290,7 +308,7 @@
   .cat-manage-row .ci img { width:100%; height:100%; object-fit:cover; }
   .cat-manage-row .nm { flex:1; font-weight:600; font-size:15px; }
   .cat-manage-row .cnt { font-size:12px; color:var(--ink-soft); }
-  .cat-manage-row .del { width:38px; height:38px; border-radius:9px; border:1px solid var(--line-dark); display:grid; place-items:center; color:var(--ink-soft); }
+  .cat-manage-row .del { width:44px; height:44px; border-radius:9px; border:1px solid var(--line-dark); display:grid; place-items:center; color:var(--ink-soft); }
   .cat-manage-row .del svg { width:17px; height:17px; }
   .cat-manage-row { cursor:pointer; }
   .cat-manage-row > svg { width:18px; height:18px; color:var(--accent-2); flex-shrink:0; }
@@ -444,6 +462,7 @@
 <button class="admin-fab" id="adminFab" title="Add product" onclick="adminNewProduct()" style="display:none"></button>
 <nav class="bottom-nav" id="bottomNav"></nav>
 <div class="toast" id="toast"></div>
+<div class="lightbox" id="lightbox" style="display:none" onclick="closeLightbox()"></div>
 <input type="file" id="fileInput" accept="image/*" multiple style="display:none" />
 
 <script>
@@ -688,6 +707,25 @@ function toast(msg){ const el=document.getElementById("toast"); el.textContent=m
 function escapeHtml(s){ return String(s==null?"":s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 /* Safe inline handler: escapes the whole call so quotes in values can't break the attribute */
 function att(fn,...args){ return escapeHtml(fn+'('+args.map(a=>JSON.stringify(a)).join(',')+')'); }
+/* ---- Lightbox (tap an image to view large; optional Change-photo action) ---- */
+let _lb=null;
+function openLightbox(images, i, changeFn){ images=(images||[]).filter(Boolean); if(!images.length){ if(changeFn) changeFn(); return; } _lb={images, i:Math.max(0,Math.min(i||0,images.length-1)), changeFn:changeFn||null}; renderLightbox(); }
+function lbNav(d){ if(!_lb) return; _lb.i=(_lb.i+d+_lb.images.length)%_lb.images.length; renderLightbox(); }
+function closeLightbox(){ _lb=null; renderLightbox(); }
+function lbChange(){ const fn=_lb&&_lb.changeFn; closeLightbox(); if(fn) fn(); }
+function renderLightbox(){ const el=document.getElementById('lightbox'); if(!el) return; if(!_lb){ el.style.display='none'; el.innerHTML=''; return; }
+  const multi=_lb.images.length>1;
+  el.style.display='flex';
+  el.innerHTML=`<button class="lb-close" onclick="closeLightbox()">${icon('x')}</button>
+    ${multi?`<button class="lb-nav lb-prev" onclick="event.stopPropagation();lbNav(-1)">${icon('back')}</button>`:''}
+    <img class="lb-img" src="${escapeHtml(_lb.images[_lb.i])}" onclick="event.stopPropagation()"/>
+    ${multi?`<button class="lb-nav lb-next" onclick="event.stopPropagation();lbNav(1)">${icon('arrow')}</button>`:''}
+    ${multi?`<div class="lb-dots">${_lb.images.map((_,i)=>`<span class="${i===_lb.i?'on':''}"></span>`).join("")}</div>`:''}
+    ${_lb.changeFn?`<button class="lb-change" onclick="event.stopPropagation();lbChange()">${icon('camera')} Change photo</button>`:''}`;
+}
+function afMoveImg(i,dir){ const a=store.admin.form.images; const j=i+dir; if(j<0||j>=a.length) return; const t=a[i]; a[i]=a[j]; a[j]=t; render(); }
+function adminCatPhotoClick(id){ const c=store.categories.find(x=>x.id===id); if(c&&c.image_url) openLightbox([c.image_url],0,()=>pickCatImage(id)); else pickCatImage(id); }
+function adminSubPhotoClick(subId){ const s=store.subcategories.find(x=>x.id===subId); if(s&&s.image_url) openLightbox([s.image_url],0,()=>pickSubImage(subId)); else pickSubImage(subId); }
 function sizeLabel(a){ if(!a) return ""; if(LANG==="en") return a; let s=a.replace("Years", LANG==="hi"?"साल":"વર્ષ").replace("Adult Free Size", LANG==="hi"?"फ्री साइज़":"ફ્રી સાઇઝ").replace("Baby", LANG==="hi"?"बेबी":"બેબી"); return s; }
 function thumbHTML(p){
   const img=(p.images&&p.images[0])||p.image;
@@ -734,7 +772,7 @@ function render(){
   const fabs=document.querySelector('.fabs'); if(fabs) fabs.style.display=adminMode?'none':'';
   const lb=document.getElementById('langBtn'); if(lb) lb.style.display=adminMode?'none':'';
   const ab=document.getElementById('announceBar'); if(ab) ab.style.display=adminMode?'none':'';
-  const afab=document.getElementById('adminFab'); if(afab){ const showFab=adminMode&&store.admin.pass&&store.admin.tab==='products'&&!store.admin.form&&!store.admin.bulk&&!store.admin.catEditId&&!store.admin.selMode; afab.style.display=showFab?'grid':'none'; if(showFab) afab.innerHTML=icon('plus'); }
+  const afab=document.getElementById('adminFab'); if(afab){ const showFab=adminMode&&store.admin.pass&&!store.admin.form&&!store.admin.bulk&&!store.admin.catEditId&&!store.admin.selMode; afab.style.display=showFab?'grid':'none'; if(showFab) afab.innerHTML=icon('plus'); }
   updateCartBar();
   if(LANG!=="en" && pendingTr.size) flushTr();
 }
@@ -778,11 +816,6 @@ function viewHome(){
       <div class="hero-content"><h2>${t('hero')}<br/>${t('hero2')||''}</h2><p class="hero-sub">${t('hero_sub')}</p><a class="hero-cta" onclick="go('categories')">${t('shop_now')} ${icon('arrow')}</a></div></div>
     <div class="divider-head"><div class="dh">${t('shop_by_cat')}</div><p>${t('shop_by_cat_sub')}</p></div>
     <div class="cat-grid">${homeCats().map(catCard).join("")}</div>
-    <div class="trust-bar trust-3">
-      <div class="trust-item"><div class="ti">${icon('shield')}</div><div><h5>${t('t_quality')}</h5><p>Finest fabric &amp; stitching</p></div></div>
-      <div class="trust-item"><div class="ti">${icon('box')}</div><div><h5>${t('t_pack')}</h5><p>100% privacy</p></div></div>
-      <div class="trust-item"><div class="ti">${icon('headset')}</div><div><h5>${t('t_support')}</h5><p>Here to help</p></div></div>
-    </div>
     <div class="section-head">${icon('phone')}<h3>${t('contact')}</h3></div>
     <div class="contact-row">
       <a class="contact-card" href="https://wa.me/${CONFIG.whatsapp}" target="_blank">${icon('whatsapp')}${t('whatsapp')}</a>
@@ -836,7 +869,7 @@ function viewDetail(){ const p=byId(store._detailId); if(!p) return viewHome(); 
   return `<div class="back-bar"><a class="back-btn" onclick="go('products',{cat:'${p.cat}'})">${icon('back')} ${escapeHtml(catName(p.cat))}</a></div>
     <div class="pd">
       <div>
-        <div class="pd-main">${mainImg}</div>
+        <div class="pd-main" ${imgs.length?`onclick="openLightbox(${escapeHtml(JSON.stringify(imgs))},${pdImg})" style="cursor:zoom-in"`:''}>${mainImg}</div>
         ${imgs.length>1?`<div class="pd-thumbs" style="margin-top:10px">${imgs.map((im,i)=>`<div class="t ${i===pdImg?'on':''}" onclick="pdImg=${i};render()"><img src="${escapeHtml(im)}"/></div>`).join("")}</div>`:''}
       </div>
       <div class="pd-info">
@@ -943,7 +976,7 @@ function viewWholesale(){ if(!store.ws) store.ws={name:"",business:"",city:CONFI
       <div class="field full"><label>${icon('phone')} ${t('mobile')}</label><input id="w_phone" type="tel" inputmode="numeric" value="${escapeHtml(w.phone)}" oninput="wsInput('phone',this.value)"/></div>
     </div>
     <div class="fld" style="margin-top:6px"><label>${icon('layers')} ${t('prod_cat')}</label>
-      <div class="chip-wrap">${catNames.map(c=>`<button class="chip ${w.cats.includes(c.name)?'on':''}" onclick="wsToggleCat(${JSON.stringify(c.name)})">${escapeHtml(c.id==='__other'?t('other'):catName(c.id))}</button>`).join("")}</div></div>
+      <div class="chip-wrap">${catNames.map(c=>`<button class="chip ${w.cats.includes(c.name)?'on':''}" onclick="${att('wsToggleCat',c.name)}">${escapeHtml(c.id==='__other'?t('other'):catName(c.id))}</button>`).join("")}</div></div>
     <div class="field full"><label>${t('monthly')}</label><input id="w_qty" value="${escapeHtml(w.qty)}" oninput="wsInput('qty',this.value)" placeholder="e.g. 500"/></div>
     <div style="height:12px"></div>
     <button class="btn-primary btn-wa" onclick="wholesaleInquiry()">${icon('whatsapp')} ${t('send_wa')}</button><div style="height:24px"></div>`;
@@ -1075,7 +1108,7 @@ function adminProducts(){
   const f=store.admin.pFilter, sm=store.admin.selMode; let list=store.products;
   if(f.cat) list=list.filter(p=>p.cat===f.cat);
   if(f.sub) list=list.filter(p=>p.subcategory===f.sub);
-  const header=`<div style="display:flex;gap:8px"><span style="flex:1;font-size:13px;color:var(--ink-soft);align-self:center">${list.length} product${list.length!==1?'s':''}</span><button class="btn-outline ${sm?'sel-on':''}" style="width:auto;padding:12px 16px" onclick="adminToggleSelMode()">${icon('check')} Select</button></div>`;
+  const header=`<div style="font-size:13px;color:var(--ink-soft)">${list.length} product${list.length!==1?'s':''}</div>`;
   const banner=(f.cat||f.sub)?`<div class="filter-banner">${icon('layers')}<span>${escapeHtml((catOf(f.cat)||{}).name||f.cat||'')}${f.sub?' · '+escapeHtml(f.sub):''} · ${list.length}</span><button onclick="adminGoProducts(null,null)">${icon('x')} Clear</button></div>`:'';
   const hint=sm?`<div class="sel-hint">Tap products to select, or long-press any product. Then share below.</div>`:`<div class="sel-hint dim">Tip: long-press a product to select &amp; share.</div>`;
   const bar=sm?`<div class="sel-bar"><div class="sb-l"><b>${store.admin.sel.length}</b> selected</div><div class="sb-r"><button class="sb-wa" onclick="shareSelWhatsApp()">${icon('whatsapp')} WhatsApp</button><button class="sb-ig" onclick="shareSelNative()">${icon('instagram')} Share</button><button class="sb-x" onclick="adminToggleSelMode()">${icon('x')}</button></div></div>`:'';
@@ -1124,10 +1157,10 @@ function adminCategoryEditor(){
   return `<div class="admin-wrap">
     <div class="back-bar" style="justify-content:space-between"><a class="back-btn" onclick="store.admin.catEditId=null;render()">${icon('back')} Configuration</a><button class="back-btn" style="color:var(--danger)" onclick='adminDeleteCategory("${c.id}",${JSON.stringify(c.name)},${cnt})'>${icon('trash')} Delete</button></div>
     <div class="page-h">Edit Category</div>
-    <div class="fld"><label>${icon('camera')} Category photo</label><div style="display:flex;gap:12px;align-items:center"><div class="photo-tile" style="width:84px;height:84px" onclick="pickCatImage('${c.id}')">${c.image_url?`<img src="${escapeHtml(c.image_url)}"/>`:icon('camera')}</div><span style="font-size:12px;color:var(--ink-soft)">Tap to change. Square photos look best.</span></div></div>
+    <div class="fld"><label>${icon('camera')} Category photo</label><div style="display:flex;gap:12px;align-items:center"><div class="photo-tile" style="width:84px;height:84px" onclick="adminCatPhotoClick('${c.id}')">${c.image_url?`<img src="${escapeHtml(c.image_url)}"/>`:icon('camera')}</div><span style="font-size:12px;color:var(--ink-soft)">Tap to ${c.image_url?'view / change':'upload'}. Square photos look best.</span></div></div>
     <div class="fld"><label>${icon('tag')} Name</label><div style="display:flex;gap:8px"><input id="cat_name" style="flex:1;padding:13px;border:1px solid var(--line-dark);border-radius:10px;font-size:16px" value="${escapeHtml(c.name)}"/><button class="btn-primary" style="width:auto;padding:0 18px" onclick="adminSaveCatName('${c.id}')">${icon('check')}</button></div></div>
     <div class="cfg-title" style="margin-top:16px">${icon('box')} Sub-categories</div>
-    ${subs.map(s=>`<div class="cat-manage-row"><div class="ci">${s.image_url?`<img src="${escapeHtml(s.image_url)}"/>`:icon(c.icon)}</div><div class="nm">${escapeHtml(s.name)}<div class="cnt">${store.products.filter(p=>p.cat===c.id&&p.subcategory===s.name).length} products</div></div><button class="del" title="Photo" onclick="pickSubImage('${s.id}')">${icon('camera')}</button><button class="del" onclick='adminDeleteSub("${s.id}",${JSON.stringify(s.name)})'>${icon('trash')}</button></div>`).join("")||`<p style="font-size:13px;color:var(--ink-soft)">No sub-categories yet.</p>`}
+    ${subs.map(s=>`<div class="cat-manage-row"><div class="ci" style="cursor:pointer" onclick="adminSubPhotoClick('${s.id}')">${s.image_url?`<img src="${escapeHtml(s.image_url)}"/>`:icon(c.icon)}</div><div class="nm">${escapeHtml(s.name)}<div class="cnt">${store.products.filter(p=>p.cat===c.id&&p.subcategory===s.name).length} products</div></div><button class="del" title="Photo" onclick="pickSubImage('${s.id}')">${icon('camera')}</button><button class="del" onclick='adminDeleteSub("${s.id}",${JSON.stringify(s.name)})'>${icon('trash')}</button></div>`).join("")||`<p style="font-size:13px;color:var(--ink-soft)">No sub-categories yet.</p>`}
     <div style="background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-top:12px">
       <label style="font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;margin-bottom:10px">${icon('plus')} Add sub-category</label>
       <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px"><div class="photo-tile" style="width:64px;height:64px" onclick="pickNewSubImage()">${ns.image?`<img src="${escapeHtml(ns.image)}"/>`:icon('camera')}</div>
@@ -1188,7 +1221,7 @@ function adminFormView(){ const f=store.admin.form, isNew=!store.admin.editing, 
   let body="";
   if(step===0){ const subs=subsForCat(f.cat);
     body=`<div class="fld"><label>${icon('camera')} Photos</label>
-      <div class="photo-tiles">${f.images.map((u,i)=>`<div class="pt"><img src="${escapeHtml(u)}"/><button class="rm" onclick="afRemoveImg(${i})">${icon('x')}</button></div>`).join("")}
+      <div class="photo-tiles">${f.images.map((u,i)=>`<div class="pt"><img src="${escapeHtml(u)}" onclick="openLightbox(${escapeHtml(JSON.stringify(f.images))},${i})"/>${i===0?'<span class="pt-main">Main</span>':''}<button class="rm" onclick="afRemoveImg(${i})">${icon('x')}</button>${f.images.length>1?`<div class="pt-move">${i>0?`<button onclick="afMoveImg(${i},-1)">${icon('back')}</button>`:'<span></span>'}${i<f.images.length-1?`<button onclick="afMoveImg(${i},1)">${icon('arrow')}</button>`:'<span></span>'}</div>`:''}</div>`).join("")}
       <button class="photo-add" onclick="pickImages()" ${store.admin.uploading?'disabled':''}>${store.admin.uploading?'...':icon('upload')}${store.admin.uploading?'':'<span>Gallery</span>'}</button></div>
       <p style="font-size:12px;color:var(--ink-soft);margin-top:6px">Pick photos from your phone. First is the main image.</p></div>
       <div class="fld"><label>${icon('tag')} Product name</label><input style="width:100%;padding:14px;border:1px solid var(--line-dark);border-radius:10px;font-size:17px;font-weight:600" value="${escapeHtml(f.title)}" oninput="afInput('title',this.value)" onchange="render()" placeholder="e.g. Diamond Net Rumali"/></div>
@@ -1199,7 +1232,7 @@ function adminFormView(){ const f=store.admin.form, isNew=!store.admin.editing, 
       ${f.colors.length?`<div class="fld"><label>${icon('camera')} Photos by colour (optional)</label>
         ${f.colors.map(hex=>{ const imgs=(f.colorImages&&f.colorImages[hex])||[]; const nm=(PALETTE.find(c=>c.h.toLowerCase()===hex.toLowerCase())||{}).n||hex;
           return `<div class="color-photos"><div class="cp-head"><span class="cp-sw" style="background:${hex}"></span>${escapeHtml(nm)}</div>
-            <div class="photo-tiles">${imgs.map((u,i)=>`<div class="pt"><img src="${escapeHtml(u)}"/><button class="rm" onclick="${att('afRemoveColorImg',hex,i)}">${icon('x')}</button></div>`).join("")}
+            <div class="photo-tiles">${imgs.map((u,i)=>`<div class="pt"><img src="${escapeHtml(u)}" onclick="openLightbox(${escapeHtml(JSON.stringify(imgs))},${i})"/><button class="rm" onclick="${att('afRemoveColorImg',hex,i)}">${icon('x')}</button></div>`).join("")}
             <button class="photo-add sm" onclick="${att('pickColorImage',hex)}" ${store.admin.uploading?'disabled':''}>${icon('upload')}</button></div></div>`; }).join("")}
         <p style="font-size:12px;color:var(--ink-soft);margin-top:4px">Customer taps a colour &rarr; its photos show. No photo &rarr; main photos used.</p></div>`:''}
       <div class="fld"><label>${icon('layers')} Material</label><div class="chip-wrap"><button class="chip ${!f.material?'on':''}" onclick="${att('afSet','material','')}">None</button>${store.materials.map(m=>`<button class="chip ${f.material===m.name?'on':''}" onclick="${att('afSet','material',m.name)}">${escapeHtml(m.name)}</button>`).join("")}</div>${store.materials.length?'':`<p style="font-size:12px;color:var(--ink-soft);margin-top:6px">Add materials in Configuration.</p>`}</div>`;
