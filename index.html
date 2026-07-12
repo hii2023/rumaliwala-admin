@@ -559,6 +559,9 @@ Object.assign(T.hi,{material:"सामग्री"});
 Object.assign(T.gu,{material:"સામગ્રી"});
 Object.assign(T.hi,{business_name:"व्यवसाय का नाम"});
 Object.assign(T.gu,{business_name:"વ્યવસાયનું નામ"});
+Object.assign(T.en,{ add_unit:"Add Unit", ws_submit:"Submit", ws_done_title:"Request Received", ws_done_msg:"Thank you. Our team will contact you shortly with wholesale pricing.", ws_ref:"Your reference number", ws_send:"Send details on WhatsApp", ws_done_ok:"Done" });
+Object.assign(T.hi,{ add_unit:"यूनिट जोड़ें", ws_submit:"सबमिट करें", ws_done_title:"अनुरोध प्राप्त हुआ", ws_done_msg:"धन्यवाद। हमारी टीम थोक मूल्य के साथ जल्द ही आपसे संपर्क करेगी।", ws_ref:"आपका संदर्भ नंबर", ws_send:"व्हाट्सएप पर विवरण भेजें", ws_done_ok:"हो गया" });
+Object.assign(T.gu,{ add_unit:"યુનિટ ઉમેરો", ws_submit:"સબમિટ કરો", ws_done_title:"વિનંતી મળી", ws_done_msg:"આભાર. અમારી ટીમ જથ્થાબંધ ભાવ સાથે ટૂંક સમયમાં તમારો સંપર્ક કરશે.", ws_ref:"તમારો સંદર્ભ નંબર", ws_send:"વોટ્સએપ પર વિગતો મોકલો", ws_done_ok:"થઈ ગયું" });
 const CAT_I18N = {
   rumali:{hi:"रुमाली",gu:"રૂમાલી"}, nose:{hi:"नोज़ पीस",gu:"નોઝ પીસ"}, burkha:{hi:"बुरखा",gu:"બુરખા"},
   gloves:{hi:"दस्ताने",gu:"ગ્લવ્ઝ"}, mask:{hi:"मास्क",gu:"માસ્ક"}, cap:{hi:"टोपी",gu:"ટોપી"},
@@ -793,7 +796,7 @@ function render(){
     case "age":html=viewAge();break; case "products":html=viewProducts();break; case "detail":html=viewDetail();break;
     case "cart":html=viewCart();break; case "wishlist":html=viewWishlist();break; case "search":html=viewSearch();break;
     case "confirm":html=viewConfirm();break;
-    case "wholesale":html=viewWholesale();break; case "admin":html=viewAdmin();break; default:html=viewHome();
+    case "wholesale":html=viewWholesale();break; case "wsdone":html=viewWsDone();break; case "admin":html=viewAdmin();break; default:html=viewHome();
   }
   app.innerHTML=html;
   const adminMode = store.view==="admin";
@@ -1005,18 +1008,32 @@ function viewWholesale(){ if(!store.ws) store.ws={name:"",business:"",city:CONFI
     </div>
     <div class="fld" style="margin-top:6px"><label>${icon('layers')} ${t('prod_cat')}</label>
       <div class="chip-wrap">${catNames.map(c=>`<button class="chip ${w.cats.includes(c.name)?'on':''}" onclick="${att('wsToggleCat',c.name)}">${escapeHtml(c.id==='__other'?t('other'):catName(c.id))}</button>`).join("")}</div></div>
-    <div class="field full"><label>${t('monthly')}</label><input id="w_qty" value="${escapeHtml(w.qty)}" oninput="wsInput('qty',this.value)" placeholder="e.g. 500"/></div>
+    <div class="field full"><label>${t('add_unit')}</label><input id="w_qty" value="${escapeHtml(w.qty)}" oninput="wsInput('qty',this.value)" placeholder="e.g. 500"/></div>
     <div style="height:12px"></div>
-    <button class="btn-primary btn-wa" onclick="wholesaleInquiry()">${icon('whatsapp')} ${t('send_wa')}</button><div style="height:24px"></div>`;
+    <button class="btn-primary" onclick="wholesaleInquiry()">${icon('check')} ${t('ws_submit')}</button><div style="height:24px"></div>`;
 }
+function wsBusinessWa(o){ const cats=(o.cats&&o.cats.length)?o.cats.join(', '):'-';
+  const m=`Wholesale Inquiry - ${o.ref}\n\nName: ${o.name}\nBusiness: ${o.business||'-'}\nCity: ${o.city}\nPhone: ${o.phone}\nProduct Category: ${cats}\nUnits: ${o.qty||'-'}`;
+  return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(m)}`; }
 function wholesaleInquiry(){ const w=store.ws||{};
   const name=(w.name||"").trim(),business=(w.business||"").trim(),city=(w.city||"").trim(),phone=(w.phone||"").trim(),qty=(w.qty||"").trim();
   if(!name||!city||!phone){ [["w_name",name],["w_city",city],["w_phone",phone]].forEach(([id,v])=>{const el=document.getElementById(id); if(el&&!v)el.classList.add("err");}); toast(t('fill_req')); return; }
-  const catArr=(w.cats&&w.cats.length)?w.cats:[]; const cats=catArr.length?catArr.join(', '):'-';
-  // record inquiry for the admin Orders → Inquiries section
-  sbRpc("rw_place_inquiry",{ p:{ name, business, phone, city, categories:catArr, qty } }).catch(()=>{});
-  const m=`Assalamualaikum.\nWholesale Inquiry\n\nName: ${name}\nBusiness: ${business||'-'}\nCity: ${city}\nPhone: ${phone}\nProduct Category: ${cats}\nMonthly need: ${qty||'-'}\n\nThank you.`;
-  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(m)}`,"_blank"); toast(t('send_wa'));
+  const catArr=(w.cats&&w.cats.length)?w.cats:[];
+  const ref='WI'+Date.now().toString(36).toUpperCase().slice(-6);
+  store.lastInquiry={ ref, name, business, city, phone, cats:catArr, qty };
+  // save to DB → shows in admin Orders → Inquiries (reliable channel)
+  sbRpc("rw_place_inquiry",{ p:{ name, business, phone, city, categories:catArr, qty, ref } }).catch(()=>{});
+  // also notify us on WhatsApp with the details + reference number
+  window.open(wsBusinessWa(store.lastInquiry),"_blank");
+  store.ws={ name:"", business:"", city:CONFIG.city, phone:"", qty:"", cats:[] };
+  store.view='wsdone'; window.scrollTo(0,0); navPush(); render();
+}
+function viewWsDone(){ const o=store.lastInquiry; if(!o) return viewWholesale();
+  return `<div class="confirm-hero"><div class="ok">${icon('check')}</div><h2>${t('ws_done_title')}</h2><p>${t('ws_done_msg')}</p><div class="confirm-ref">${t('ws_ref')}: ${escapeHtml(o.ref)}</div></div>
+    <button class="btn-primary btn-wa" onclick="window.open(wsBusinessWa(store.lastInquiry),'_blank')">${icon('whatsapp')} ${t('ws_send')}</button>
+    <div style="height:10px"></div>
+    <button class="btn-outline" onclick="go('home')">${t('ws_done_ok')}</button>
+    <div style="height:30px"></div>`;
 }
 function notifyMe(id){ const p=byId(id); const m=`Assalamualaikum.\nNotify me when back in stock:\n${p.title}${p.age?` (${p.age})`:''}\nThank you.`; window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(m)}`,"_blank"); }
 function shareProduct(id){ const p=byId(id); const text=`${p.title} - ${money(p.price)}\nOrder at ${CONFIG.businessName}`; if(navigator.share){ navigator.share({title:p.title,text}).catch(()=>{}); } else { window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,"_blank"); } }
@@ -1107,8 +1124,8 @@ function inquiryCard(q){ const d=new Date(q.created_at); const dstr=isNaN(d)?'':
   return `<div class="order-card">
     <div class="order-top"><b>${escapeHtml(q.name||'')}</b><span class="pill-stat hidden">${escapeHtml(q.status||'new')}</span></div>
     ${q.business?`<div class="order-cust">${escapeHtml(q.business)}</div>`:''}
-    <div class="order-items"><b>Area:</b> ${escapeHtml(q.city||'-')}<br/><b>Interest:</b> ${escapeHtml(cats)}${q.qty?`<br/><b>Monthly:</b> ${escapeHtml(q.qty)}`:''}</div>
-    <div class="order-foot"><span>${dstr}</span><span>${escapeHtml(q.phone||'')}</span></div>
+    <div class="order-items"><b>Area:</b> ${escapeHtml(q.city||'-')}<br/><b>Interest:</b> ${escapeHtml(cats)}${q.qty?`<br/><b>Units:</b> ${escapeHtml(q.qty)}`:''}</div>
+    <div class="order-foot"><span>${q.ref?escapeHtml(q.ref)+' · ':''}${dstr}</span><span>${escapeHtml(q.phone||'')}</span></div>
     <div style="display:flex;gap:8px;margin-top:9px">
       <a class="btn-primary" style="flex:1;padding:10px;font-size:13px" href="tel:+${phone}">${icon('phone')} Call</a>
       <a class="btn-primary btn-wa" style="flex:1;padding:10px;font-size:13px" href="${inquiryWa(q,phone)}" target="_blank">${icon('whatsapp')} WhatsApp</a>
