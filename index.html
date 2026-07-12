@@ -462,7 +462,7 @@
 <button class="admin-fab" id="adminFab" title="Add product" onclick="adminNewProduct()" style="display:none"></button>
 <nav class="bottom-nav" id="bottomNav"></nav>
 <div class="toast" id="toast"></div>
-<div class="lightbox" id="lightbox" style="display:none" onclick="closeLightbox()"></div>
+<div class="lightbox" id="lightbox" style="display:none" onclick="lbClose()"></div>
 <input type="file" id="fileInput" accept="image/*" multiple style="display:none" />
 
 <script>
@@ -709,14 +709,15 @@ function escapeHtml(s){ return String(s==null?"":s).replace(/[&<>"']/g,m=>({'&':
 function att(fn,...args){ return escapeHtml(fn+'('+args.map(a=>JSON.stringify(a)).join(',')+')'); }
 /* ---- Lightbox (tap an image to view large; optional Change-photo action) ---- */
 let _lb=null;
-function openLightbox(images, i, changeFn){ images=(images||[]).filter(Boolean); if(!images.length){ if(changeFn) changeFn(); return; } _lb={images, i:Math.max(0,Math.min(i||0,images.length-1)), changeFn:changeFn||null}; renderLightbox(); }
+function openLightbox(images, i, changeFn){ images=(images||[]).filter(Boolean); if(!images.length){ if(changeFn) changeFn(); return; } _lb={images, i:Math.max(0,Math.min(i||0,images.length-1)), changeFn:changeFn||null}; navPush(); renderLightbox(); }
 function lbNav(d){ if(!_lb) return; _lb.i=(_lb.i+d+_lb.images.length)%_lb.images.length; renderLightbox(); }
-function closeLightbox(){ _lb=null; renderLightbox(); }
-function lbChange(){ const fn=_lb&&_lb.changeFn; closeLightbox(); if(fn) fn(); }
+function closeLightbox(){ _lb=null; renderLightbox(); }        // low-level: used on popstate restore
+function lbClose(){ if(_lb) navBack(); }                        // user-triggered close (backdrop / X)
+function lbChange(){ const fn=_lb&&_lb.changeFn; if(_lb) navBack(); if(fn) setTimeout(fn,40); }
 function renderLightbox(){ const el=document.getElementById('lightbox'); if(!el) return; if(!_lb){ el.style.display='none'; el.innerHTML=''; return; }
   const multi=_lb.images.length>1;
   el.style.display='flex';
-  el.innerHTML=`<button class="lb-close" onclick="closeLightbox()">${icon('x')}</button>
+  el.innerHTML=`<button class="lb-close" onclick="lbClose()">${icon('x')}</button>
     ${multi?`<button class="lb-nav lb-prev" onclick="event.stopPropagation();lbNav(-1)">${icon('back')}</button>`:''}
     <img class="lb-img" src="${escapeHtml(_lb.images[_lb.i])}" onclick="event.stopPropagation()"/>
     ${multi?`<button class="lb-nav lb-next" onclick="event.stopPropagation();lbNav(1)">${icon('arrow')}</button>`:''}
@@ -745,12 +746,39 @@ function toggleWish(id){ if(store.wishlist.includes(id)) store.wishlist=store.wi
 const isWished=id=>store.wishlist.includes(id);
 function trackRecent(id){ store.recent=[id,...store.recent.filter(x=>x!==id)].slice(0,8); persist(); }
 
-/* ============ NAV ============ */
+/* ============ NAV + HISTORY (real back-button support) ============ */
+// Every forward move pushes a browser history entry, so the phone/browser back
+// button (and every in-page back button, via navBack) steps back one screen and
+// closes overlays/forms instead of leaving the app.
+function navSnapshot(){ const a=store.admin||{};
+  return { rw:1, v:store.view, fc:store.filterCat||null, fs:store.filterSub||null, fa:store.filterAge||null,
+    d:store._detailId||null, q:store.search||'', aTab:a.tab||null, aForm:a.form?1:0, aCat:a.catEditId||null,
+    aBulk:a.bulk?1:0, lb:_lb?1:0 }; }
+function navUrl(){ const p=location.pathname;
+  if(store.view==='admin') return p+'#admin';
+  if(store.view==='detail'&&store._detailId) return p+'#p/'+encodeURIComponent(store._detailId);
+  return p; }
+function navSame(a,b){ return !!a&&!!b&&a.v===b.v&&a.fc===b.fc&&a.fs===b.fs&&a.fa===b.fa&&a.d===b.d&&a.aTab===b.aTab&&a.aForm===b.aForm&&a.aCat===b.aCat&&a.aBulk===b.aBulk&&a.lb===b.lb; }
+function navPush(){ const s=navSnapshot(), c=history.state;
+  try{ if(navSame(c,s)) history.replaceState(s,'',navUrl()); else history.pushState(s,'',navUrl()); }catch(e){} }
+function navReplace(base){ const s=navSnapshot(); if(base) s.base=1; try{ history.replaceState(s,'',navUrl()); }catch(e){} }
+function navBack(){ const s=history.state; if(s&&s.rw&&!s.base){ history.back(); } else { navHome(); } }
+function navHome(){ store.view='home'; store.filterCat=store.filterSub=store.filterAge=null; store._detailId=null; store.search='';
+  if(store.admin){ store.admin.form=null; store.admin.bulk=false; store.admin.catEditId=null; store.admin.selMode=false; store.admin.sel=[]; }
+  _lb=null; navReplace(); window.scrollTo(0,0); render(); renderLightbox(); }
+function navApply(s){ if(!s) s={v:'home'};
+  store.view=s.v||'home'; store.filterCat=s.fc||null; store.filterSub=s.fs||null; store.filterAge=s.fa||null;
+  store._detailId=s.d||null; store.search=s.q||'';
+  if(store.admin){ if(s.aTab) store.admin.tab=s.aTab; store.admin.form=null; store.admin.bulk=false; store.admin.selMode=false; store.admin.sel=[]; store.admin.catEditId=s.aCat||null; }
+  _lb=null;
+  if(store.view==='detail'&&store._detailId){ const p=byId(store._detailId); if(p){ pdSize=productSizes(p)[0]||''; pdColor=(p.colors&&p.colors[0])||''; pdImg=0; pdQty=1; } }
+}
+window.addEventListener('popstate',function(e){ navApply(e.state); window.scrollTo(0,0); render(); renderLightbox(); });
+
 function go(view,opts={}){ store.view=view;
   if(opts.cat!==undefined) store.filterCat=opts.cat; if(opts.sub!==undefined) store.filterSub=opts.sub; if(opts.age!==undefined) store.filterAge=opts.age;
   if(view==="home"){ store.filterCat=store.filterSub=store.filterAge=null; store.search=""; const si=document.getElementById("searchInput"); if(si) si.value=""; }
-  if(view!=="admin"&&location.hash==="#admin") history.replaceState(null,"",location.pathname);
-  window.scrollTo(0,0); render();
+  window.scrollTo(0,0); navPush(); render();
 }
 function onSearch(v){ store.search=v.trim().toLowerCase(); if(store.search&&store.view!=="search") store.view="search"; if(!store.search&&store.view==="search") store.view="home"; render(); }
 function matchesSearch(p){ if(!store.search) return true; return [p.title,p.cat,p.sub,p.age,p.fabric,catOf(p.cat)&&catOf(p.cat).name,(p.colors||[]).join(" ")].join(" ").toLowerCase().includes(store.search); }
@@ -823,14 +851,14 @@ function viewHome(){
     </div>
     <div class="site-footer">${CONFIG.businessName} &middot; ${CONFIG.city}</div>`;
 }
-function viewCategories(){ return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div><div class="page-h">${t('shop_title')}</div><div class="cat-grid">${homeCats().map(catCard).join("")}</div>`; }
+function viewCategories(){ return `<div class="back-bar"><a class="back-btn" onclick="navBack()">${icon('back')} ${t('home')}</a></div><div class="page-h">${t('shop_title')}</div><div class="cat-grid">${homeCats().map(catCard).join("")}</div>`; }
 function catTypeNames(catId){ const m=subsForCat(catId); if(m.length) return m.map(s=>s.name); return subsFor(catId); }
 function openCategory(catId){ if(catTypeNames(catId).length) go("category",{cat:catId,sub:null,age:null}); else go("products",{cat:catId,sub:null,age:null}); }
 function viewCategory(){ const managed=subsForCat(store.filterCat);
   const body = managed.length
     ? `<div class="cat-grid">${managed.map(s=>{ const photo=s.image_url?`<img src="${escapeHtml(s.image_url)}" alt="${escapeHtml(s.name)}" loading="lazy"/>`:`<div class="ph">${icon(catIcon(store.filterCat))}</div>`; return `<div class="cat-card" onclick='openSub("${store.filterCat}",${JSON.stringify(s.name)})'><div class="cat-photo">${photo}</div><div class="cat-foot"><div class="name">${escapeHtml(P(s.name))}</div></div></div>`; }).join("")}</div>`
     : `<div class="sub-list">${subsFor(store.filterCat).map(s=>`<div class="sub-row" onclick='openSub("${store.filterCat}",${JSON.stringify(s)})'><span class="t">${escapeHtml(P(s))}</span>${icon('arrow')}</div>`).join("")}</div>`;
-  return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div>
+  return `<div class="back-bar"><a class="back-btn" onclick="navBack()">${icon('back')} ${t('home')}</a></div>
     <div class="page-h">${escapeHtml(catName(store.filterCat))}</div><div class="page-sub">${t('choose_type')}</div>${body}`;
 }
 function openSub(catId,sub){ const rel=shopProducts().filter(p=>p.cat===catId&&p.sub===sub); const sizes=[...new Set(rel.flatMap(productSizes))]; if(sizes.length>1) go("age",{cat:catId,sub,age:null}); else go("products",{cat:catId,sub,age:null}); }
@@ -838,15 +866,15 @@ function viewAge(){
   const rel=shopProducts().filter(p=>p.cat===store.filterCat && (!store.filterSub||p.sub===store.filterSub));
   let list=sortSizes([...new Set(rel.flatMap(productSizes))]);
   if(!list.length){ const isWomen=/women/i.test(store.filterSub||""); list=isWomen?AGE_ADULT:AGE_KIDS.concat(["Adult Free Size"]); }
-  return `<div class="back-bar"><a class="back-btn" onclick="go('category',{cat:'${store.filterCat}'})">${icon('back')} ${escapeHtml(catName(store.filterCat))}</a></div>
+  return `<div class="back-bar"><a class="back-btn" onclick="navBack()">${icon('back')} ${escapeHtml(catName(store.filterCat))}</a></div>
     <div class="page-h">${escapeHtml(P(store.filterSub)||catName(store.filterCat))}</div><div class="page-sub">${t('choose_size')}</div>
     <div class="age-grid">${list.map(a=>{ const yr=/(\d+)\s*year/i.exec(a); const main=yr?yr[1]:sizeLabel(a); const sub=yr?(LANG==='en'?'yr':sizeLabel('Years')):''; return `<div class="age-card" onclick='go("products",{cat:"${store.filterCat}",sub:${JSON.stringify(store.filterSub||"")},age:${JSON.stringify(a)}})'>${escapeHtml(main)}<small>${sub}</small></div>`; }).join("")}</div>
     <div style="margin-top:14px"><button class="btn-outline" onclick='go("products",{cat:"${store.filterCat}",sub:${JSON.stringify(store.filterSub||"")},age:null})'>${t('show_all')}</button></div>`;
 }
 function filteredProducts(){ let list=shopProducts().filter(p=>{ if(store.filterCat&&p.cat!==store.filterCat) return false; if(store.filterSub&&p.sub!==store.filterSub) return false; if(store.filterAge&&!productSizes(p).includes(store.filterAge)) return false; return true; });
   switch(store.sort){ case "low":list.sort((a,b)=>a.price-b.price);break; case "high":list.sort((a,b)=>b.price-a.price);break; case "popular":list.sort((a,b)=>b.stars-a.stars);break; } return list; }
-function viewProducts(){ const list=filteredProducts(); const backTo=subsFor(store.filterCat).length?`go('category',{cat:'${store.filterCat}'})`:"go('home')";
-  return `<div class="back-bar"><a class="back-btn" onclick="${backTo}">${icon('back')} ${t('back')}</a></div>
+function viewProducts(){ const list=filteredProducts();
+  return `<div class="back-bar"><a class="back-btn" onclick="navBack()">${icon('back')} ${t('back')}</a></div>
     <div class="page-h">${escapeHtml(catName(store.filterCat))}</div>
     <div class="page-sub">${[P(store.filterSub),sizeLabel(store.filterAge)].filter(Boolean).join(' · ')||t('all')} · ${list.length}</div>
     <div class="chips">${[['featured',t('all')],['low','₹ ↓'],['high','₹ ↑'],['popular',t('popular')]].map(([v,l])=>`<div class="chip ${store.sort===v?'active':''}" onclick="setSort('${v}')">${l}</div>`).join("")}</div>
@@ -866,7 +894,7 @@ function viewDetail(){ const p=byId(store._detailId); if(!p) return viewHome(); 
   const mainImg = imgs.length?`<img src="${escapeHtml(imgs[pdImg]||imgs[0])}" onerror="this.style.display='none'"/>`:`<div class="ph">${icon(catIcon(p.cat),'')}</div>`;
   const inCartQ=cartQtyFor(p.id,pdSize,pdColor);
   const specs=[]; if(p.material) specs.push(`<div class="row"><span>${t('material')}</span><span>${escapeHtml(P(p.material))}</span></div>`); if(p.fabric) specs.push(`<div class="row"><span>${t('fabric')}</span><span>${escapeHtml(P(p.fabric))}</span></div>`);
-  return `<div class="back-bar"><a class="back-btn" onclick="go('products',{cat:'${p.cat}'})">${icon('back')} ${escapeHtml(catName(p.cat))}</a></div>
+  return `<div class="back-bar"><a class="back-btn" onclick="navBack()">${icon('back')} ${escapeHtml(catName(p.cat))}</a></div>
     <div class="pd">
       <div>
         <div class="pd-main" ${imgs.length?`onclick="openLightbox(${escapeHtml(JSON.stringify(imgs))},${pdImg})" style="cursor:zoom-in"`:''}>${mainImg}</div>
@@ -891,9 +919,9 @@ function viewDetail(){ const p=byId(store._detailId); if(!p) return viewHome(); 
 
 /* ---------- CART ---------- */
 function viewCart(){
-  if(!store.cart.length) return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('back')}</a></div><div class="empty">${icon('cart','')}${t('cart_empty')}<br/><br/><button class="btn-primary" style="max-width:220px;margin:0 auto" onclick="go('categories')">${t('shop_now')}</button></div>`;
+  if(!store.cart.length) return `<div class="back-bar"><a class="back-btn" onclick="navBack()">${icon('back')} ${t('back')}</a></div><div class="empty">${icon('cart','')}${t('cart_empty')}<br/><br/><button class="btn-primary" style="max-width:220px;margin:0 auto" onclick="go('categories')">${t('shop_now')}</button></div>`;
   const total=cartTotal();
-  return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('back')}</a></div>
+  return `<div class="back-bar"><a class="back-btn" onclick="navBack()">${icon('back')} ${t('back')}</a></div>
     <div class="page-h">${t('cart')}</div><div class="page-sub">${cartCount()} ${cartCount()!==1?t('items'):t('item')}</div>
     ${store.cart.map(it=>{ const p=byId(it.id); if(!p) return ''; const meta=[sizeLabel(it.size||productSizes(p)[0]||''), it.color?`<span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:${it.color};vertical-align:middle;border:1px solid #0002"></span>`:''].filter(Boolean).join(' · ');
       return `<div class="cart-item"><div class="cart-thumb">${thumbHTML(p)}</div>
@@ -930,7 +958,7 @@ function placeOrder(){ const g=id=>(document.getElementById(id)||{}).value||"";
   const ref='RW'+Date.now().toString(36).toUpperCase().slice(-6);
   store.lastOrder={ ref, name, phone, addr, city, pin, items, sub, del, total:sub+del };
   store.cart=[]; persist(); updateBadges();
-  store.view='confirm'; window.scrollTo(0,0); render();
+  store.view='confirm'; window.scrollTo(0,0); navPush(); render();
   // record order in database (fire-and-forget; confirmation already shown)
   sbRpc("rw_place_order",{ p:{ ref, name, phone, address:addr, city, pin, items, subtotal:sub, delivery:del, total:sub+del } }).catch(()=>{});
 }
@@ -956,18 +984,18 @@ function viewConfirm(){ const o=store.lastOrder; if(!o) return viewHome();
 }
 
 function viewWishlist(){ const list=store.wishlist.map(byId).filter(p=>p&&p.active);
-  return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div><div class="page-h">${t('saved')}</div>
+  return `<div class="back-bar"><a class="back-btn" onclick="navBack()">${icon('back')} ${t('home')}</a></div><div class="page-h">${t('saved')}</div>
     ${list.length?`<div class="prod-grid">${list.map(productCard).join("")}</div>`:`<div class="empty">${icon('heart','')}${t('save_hint')}</div>`}`;
 }
 function viewSearch(){ const list=shopProducts().filter(matchesSearch);
-  return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div><div class="page-h">${t('search_t')}</div><div class="page-sub">"${escapeHtml(store.search)}" · ${list.length}</div>
+  return `<div class="back-bar"><a class="back-btn" onclick="navBack()">${icon('back')} ${t('home')}</a></div><div class="page-h">${t('search_t')}</div><div class="page-sub">"${escapeHtml(store.search)}" · ${list.length}</div>
     ${list.length?`<div class="prod-grid">${list.map(productCard).join("")}</div>`:`<div class="empty">${icon('search','')}${t('no_match')}</div>`}`;
 }
 function wsInput(k,v){ store.ws[k]=v; }
 function wsToggleCat(name){ const a=store.ws.cats; const i=a.indexOf(name); if(i>=0) a.splice(i,1); else a.push(name); render(); }
 function viewWholesale(){ if(!store.ws) store.ws={name:"",business:"",city:CONFIG.city,phone:"",qty:"",cats:[]};
   const w=store.ws; const catNames=store.categories.map(c=>({id:c.id,name:c.name})).concat([{id:"__other",name:"Other"}]);
-  return `<div class="back-bar"><a class="back-btn" onclick="go('home')">${icon('back')} ${t('home')}</a></div>
+  return `<div class="back-bar"><a class="back-btn" onclick="navBack()">${icon('back')} ${t('home')}</a></div>
     <div class="wholesale-hero"><div class="pattern" style="background-image:${patternURI('#f4efe4')}"></div><h2>${t('wholesale')}</h2><p>${t('wholesale_sub')}</p></div>
     <div class="form-grid">
       <div class="field full"><label>${t('name')}</label><input id="w_name" value="${escapeHtml(w.name)}" oninput="wsInput('name',this.value)"/></div>
@@ -994,9 +1022,9 @@ function notifyMe(id){ const p=byId(id); const m=`Assalamualaikum.\nNotify me wh
 function shareProduct(id){ const p=byId(id); const text=`${p.title} - ${money(p.price)}\nOrder at ${CONFIG.businessName}`; if(navigator.share){ navigator.share({title:p.title,text}).catch(()=>{}); } else { window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,"_blank"); } }
 
 /* ============ ADMIN ============ */
-function openAdmin(){ store.view="admin"; store.admin.form=null; store.admin.catAdding=false; store.admin.bulk=false; store.admin.catEditId=null; if(!store.admin.tab) store.admin.tab="dashboard"; location.hash="#admin"; window.scrollTo(0,0); render(); }
-function adminGo(tab){ store.admin.tab=tab; store.admin.form=null; store.admin.bulk=false; store.admin.catAdding=false; store.admin.catEditId=null; store.admin.selMode=false; store.admin.sel=[]; if(tab==='products') store.admin.pFilter={cat:null,sub:null}; window.scrollTo(0,0); if(tab==='orders'){ if(!store.admin.ordersLoaded) loadOrders(); if(!store.admin.inquiriesLoaded) loadInquiries(); } render(); }
-function adminGoProducts(cat,sub){ store.admin.pFilter={cat:cat||null,sub:sub||null}; store.admin.tab='products'; store.admin.form=null; store.admin.bulk=false; store.admin.catEditId=null; store.admin.selMode=false; store.admin.sel=[]; window.scrollTo(0,0); render(); }
+function openAdmin(){ store.view="admin"; store.admin.form=null; store.admin.catAdding=false; store.admin.bulk=false; store.admin.catEditId=null; if(!store.admin.tab) store.admin.tab="dashboard"; window.scrollTo(0,0); navPush(); render(); }
+function adminGo(tab){ store.admin.tab=tab; store.admin.form=null; store.admin.bulk=false; store.admin.catAdding=false; store.admin.catEditId=null; store.admin.selMode=false; store.admin.sel=[]; if(tab==='products') store.admin.pFilter={cat:null,sub:null}; window.scrollTo(0,0); if(tab==='orders'){ if(!store.admin.ordersLoaded) loadOrders(); if(!store.admin.inquiriesLoaded) loadInquiries(); } navPush(); render(); }
+function adminGoProducts(cat,sub){ store.admin.pFilter={cat:cat||null,sub:sub||null}; store.admin.tab='products'; store.admin.form=null; store.admin.bulk=false; store.admin.catEditId=null; store.admin.selMode=false; store.admin.sel=[]; window.scrollTo(0,0); navPush(); render(); }
 /* ---- selection + share ---- */
 let _lp={t:null,x:0,y:0};
 function lpStart(e,id){ _lp.x=(e.clientX||0); _lp.y=(e.clientY||0); clearTimeout(_lp.t); _lp.t=setTimeout(()=>{ store.admin.selMode=true; if(!store.admin.sel.includes(id)) store.admin.sel.push(id); if(navigator.vibrate) navigator.vibrate(15); render(); },420); }
@@ -1149,13 +1177,13 @@ async function adminCatSave(){ const nc=store.admin.newCat; if(!nc.name.trim()){
   catch(e){ toast(adminErr(e)); adminMaybeLogout(e); }
 }
 /* ----- Category editor (photo + sub-categories) ----- */
-function adminOpenCategory(id){ store.admin.catEditId=id; store.admin.newSub={name:"",image:""}; store.admin.newSize={size:"",age:""}; window.scrollTo(0,0); render(); }
+function adminOpenCategory(id){ store.admin.catEditId=id; store.admin.newSub={name:"",image:""}; store.admin.newSize={size:"",age:""}; window.scrollTo(0,0); navPush(); render(); }
 function adminCategoryEditor(){
   const c=store.categories.find(x=>x.id===store.admin.catEditId); if(!c){ store.admin.catEditId=null; return viewAdmin(); }
   const subs=subsForCat(c.id), cnt=store.products.filter(p=>p.cat===c.id).length, ns=store.admin.newSub;
   const szs=sizesForCat(c.id), nz=store.admin.newSize;
   return `<div class="admin-wrap">
-    <div class="back-bar" style="justify-content:space-between"><a class="back-btn" onclick="store.admin.catEditId=null;render()">${icon('back')} Configuration</a><button class="back-btn" style="color:var(--danger)" onclick='adminDeleteCategory("${c.id}",${JSON.stringify(c.name)},${cnt})'>${icon('trash')} Delete</button></div>
+    <div class="back-bar" style="justify-content:space-between"><a class="back-btn" onclick="navBack()">${icon('back')} Configuration</a><button class="back-btn" style="color:var(--danger)" onclick='adminDeleteCategory("${c.id}",${JSON.stringify(c.name)},${cnt})'>${icon('trash')} Delete</button></div>
     <div class="page-h">Edit Category</div>
     <div class="fld"><label>${icon('camera')} Category photo</label><div style="display:flex;gap:12px;align-items:center"><div class="photo-tile" style="width:84px;height:84px" onclick="adminCatPhotoClick('${c.id}')">${c.image_url?`<img src="${escapeHtml(c.image_url)}"/>`:icon('camera')}</div><span style="font-size:12px;color:var(--ink-soft)">Tap to ${c.image_url?'view / change':'upload'}. Square photos look best.</span></div></div>
     <div class="fld"><label>${icon('tag')} Name</label><div style="display:flex;gap:8px"><input id="cat_name" style="flex:1;padding:13px;border:1px solid var(--line-dark);border-radius:10px;font-size:16px" value="${escapeHtml(c.name)}"/><button class="btn-primary" style="width:auto;padding:0 18px" onclick="adminSaveCatName('${c.id}')">${icon('check')}</button></div></div>
@@ -1183,7 +1211,7 @@ async function adminDeleteCategory(id,name,cnt){ if(cnt>0){ toast(`Move/delete $
   try{ await sbRpc("rw_delete_category",{p_passcode:store.admin.pass,p_id:id}); await reloadCategories(); toast("Deleted"); render(); }
   catch(e){ toast(/has_products/.test(e.message)?"Category has products":adminErr(e)); adminMaybeLogout(e); }
 }
-function adminLogin(){ return `<div class="admin-login"><div class="lk">${icon('lock')}</div><h2 style="font-size:22px">Admin</h2><p style="color:var(--ink-soft);font-size:13px;margin:4px 0 16px">Enter passcode.</p><div class="field" style="text-align:left"><input id="adm_pass" type="password" placeholder="Passcode" onkeydown="if(event.key==='Enter')adminVerify()"/></div><div style="height:12px"></div><button class="btn-primary" onclick="adminVerify()">${icon('check')} Unlock</button><div style="height:10px"></div><button class="btn-outline" onclick="go('home')">Back</button></div>`; }
+function adminLogin(){ return `<div class="admin-login"><div class="lk">${icon('lock')}</div><h2 style="font-size:22px">Admin</h2><p style="color:var(--ink-soft);font-size:13px;margin:4px 0 16px">Enter passcode.</p><div class="field" style="text-align:left"><input id="adm_pass" type="password" placeholder="Passcode" onkeydown="if(event.key==='Enter')adminVerify()"/></div><div style="height:12px"></div><button class="btn-primary" onclick="adminVerify()">${icon('check')} Unlock</button><div style="height:10px"></div><button class="btn-outline" onclick="navBack()">Back</button></div>`; }
 async function adminVerify(){ const pass=(document.getElementById("adm_pass")||{}).value||""; if(!pass) return;
   try{ const ok=await sbRpc("rw_check_pass",{p_passcode:pass}); if(ok===true){ store.admin.pass=pass; localStorage.setItem("rw_pass",pass); toast("Welcome"); render(); } else toast("Wrong passcode"); }
   catch(e){ toast("Check connection"); }
@@ -1205,8 +1233,8 @@ function afRemoveImg(i){ store.admin.form.images.splice(i,1); render(); }
 
 /* ----- Product wizard (step-by-step) ----- */
 function blankForm(){ return { id:null, title:"", cat:(store.categories[0]||{}).id||"rumali", sub:"", age:"", sizes:[], fabric:"", material:"", price:"", mrp:"", stock:"10", colors:[], images:[], colorImages:{}, desc:"", active:true }; }
-function adminNewProduct(){ store.admin.editing=null; store.admin.form=blankForm(); store.admin.step=0; render(); pickImages(); }
-function adminEditProduct(id){ const p=byId(id); if(!p) return; store.admin.editing=id; store.admin.form={ id:p.id, title:p.title, cat:p.cat, sub:p.sub, age:p.age, sizes:(p.sizes&&p.sizes.length)?[...p.sizes]:(p.age?[p.age]:[]), fabric:p.fabric, material:p.material||"", price:String(p.price), mrp:p.mrp?String(p.mrp):"", stock:String(p.stock), colors:[...(p.colors||[])], images:[...(p.images||(p.image?[p.image]:[]))], colorImages:JSON.parse(JSON.stringify(p.colorImages||{})), desc:p.desc, active:p.active }; store.admin.step=0; render(); }
+function adminNewProduct(){ store.admin.editing=null; store.admin.form=blankForm(); store.admin.step=0; navPush(); render(); pickImages(); }
+function adminEditProduct(id){ const p=byId(id); if(!p) return; store.admin.editing=id; store.admin.form={ id:p.id, title:p.title, cat:p.cat, sub:p.sub, age:p.age, sizes:(p.sizes&&p.sizes.length)?[...p.sizes]:(p.age?[p.age]:[]), fabric:p.fabric, material:p.material||"", price:String(p.price), mrp:p.mrp?String(p.mrp):"", stock:String(p.stock), colors:[...(p.colors||[])], images:[...(p.images||(p.image?[p.image]:[]))], colorImages:JSON.parse(JSON.stringify(p.colorImages||{})), desc:p.desc, active:p.active }; store.admin.step=0; navPush(); render(); }
 function afSet(k,v){ store.admin.form[k]=v; render(); }
 function afInput(k,v){ store.admin.form[k]=v; }
 function afToggle(k,v){ const a=store.admin.form[k]; const i=a.indexOf(v); if(i>=0) a.splice(i,1); else a.push(v); render(); }
@@ -1217,7 +1245,7 @@ function pickColorImage(hex){ const inp=document.getElementById("fileInput"); in
 function afRemoveColorImg(hex,i){ const f=store.admin.form; if(f.colorImages&&f.colorImages[hex]){ f.colorImages[hex].splice(i,1); if(!f.colorImages[hex].length) delete f.colorImages[hex]; } render(); }
 function adminFormView(){ const f=store.admin.form, isNew=!store.admin.editing, step=store.admin.step;
   const stepsBar=`<div class="wiz-steps">${[0,1,2].map(i=>`<div class="s ${i<=step?'on':''}"></div>`).join("")}</div>`;
-  const head=`<div class="back-bar" style="justify-content:space-between"><a class="back-btn" onclick="adminGo('products')">${icon('back')} Products</a><button class="back-btn" onclick="adminGo('products')">${icon('x')} Close</button></div><div class="page-h">${isNew?'Add Product':'Edit Product'} <span style="font-size:14px;color:var(--ink-soft)">· ${step+1}/3</span></div>${stepsBar}`;
+  const head=`<div class="back-bar" style="justify-content:space-between"><a class="back-btn" onclick="navBack()">${icon('back')} Products</a><button class="back-btn" onclick="navBack()">${icon('x')} Close</button></div><div class="page-h">${isNew?'Add Product':'Edit Product'} <span style="font-size:14px;color:var(--ink-soft)">· ${step+1}/3</span></div>${stepsBar}`;
   let body="";
   if(step===0){ const subs=subsForCat(f.cat);
     body=`<div class="fld"><label>${icon('camera')} Photos</label>
@@ -1266,15 +1294,15 @@ async function adminDeleteProduct(id,title){ if(!confirm(`Delete "${title}"?`)) 
 }
 
 /* ----- Bulk add ----- */
-function adminBulkStart(){ store.admin.bulk=true; store.admin.bulkText=""; render(); }
+function adminBulkStart(){ store.admin.bulk=true; store.admin.bulkText=""; navPush(); render(); }
 function adminBulkView(){
-  return `<div class="admin-wrap"><div class="back-bar"><a class="back-btn" onclick="store.admin.bulk=false;render()">${icon('back')} Admin</a></div>
+  return `<div class="admin-wrap"><div class="back-bar"><a class="back-btn" onclick="navBack()">${icon('back')} Admin</a></div>
     <div class="page-h">Bulk Add Products</div>
     <p style="font-size:13px;color:var(--ink-soft);margin:0 0 12px">One product per line. Separate fields with a comma:<br/><b>Name, Category, Price, MRP, Stock</b><br/>Category can be a name (Rumali) or blank for the first category.</p>
     <textarea id="bulkText" style="width:100%;min-height:180px;padding:13px;border:1px solid var(--line-dark);border-radius:10px;font-size:14px;font-family:monospace" placeholder="Diamond Rumali, Rumali, 120, 150, 20&#10;Cotton Cap, Cap, 60, 80, 40" oninput="store.admin.bulkText=this.value">${escapeHtml(store.admin.bulkText)}</textarea>
     <p id="bulkCount" style="font-size:13px;color:var(--accent-2);margin:8px 2px">${bulkParse(store.admin.bulkText).length} product(s) detected</p>
     <button class="btn-primary" id="bulk_save" onclick="adminBulkSave()">${icon('check')} Add all</button>
-    <div style="height:10px"></div><button class="btn-outline" onclick="store.admin.bulk=false;render()">Cancel</button><div style="height:30px"></div></div>`;
+    <div style="height:10px"></div><button class="btn-outline" onclick="navBack()">Cancel</button><div style="height:30px"></div></div>`;
 }
 function bulkParse(text){ const out=[]; (text||"").split(/\r?\n/).forEach(line=>{ if(!line.trim()) return; const parts=line.split(/[,\t]/).map(s=>s.trim());
   const title=parts[0]; if(!title) return; const catRaw=parts[1]||""; const cat=store.categories.find(c=>c.id===catRaw.toLowerCase()||c.name.toLowerCase()===catRaw.toLowerCase()); const catId=cat?cat.id:((store.categories[0]||{}).id||"rumali");
@@ -1319,7 +1347,7 @@ function installApp(){ if(_installPrompt){ _installPrompt.prompt(); _installProm
 if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{})); }
 /* ---- product deep link (#p/<id>) ---- */
 function openDeepLink(){ const m=/^#p\/(.+)$/.exec(location.hash||""); if(m){ const p=byId(decodeURIComponent(m[1])); if(p){ store._detailId=p.id; pdSize=productSizes(p)[0]||""; pdColor=(p.colors&&p.colors[0])||""; pdImg=0; pdQty=1; store.view="detail"; return true; } } return false; }
-async function init(){ document.documentElement.lang=LANG; applyChrome(); if(location.hostname.startsWith("admin.")||location.hash==="#admin") store.view="admin"; render(); await loadData(); openDeepLink(); render(); }
+async function init(){ document.documentElement.lang=LANG; applyChrome(); if(location.hostname.startsWith("admin.")||location.hash==="#admin") store.view="admin"; navReplace(true); render(); await loadData(); openDeepLink(); navReplace(true); render(); }
 init();
 </script>
 </body>
