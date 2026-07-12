@@ -776,7 +776,60 @@ function navApply(s){ if(!s) s={v:'home'};
   _lb=null;
   if(store.view==='detail'&&store._detailId){ const p=byId(store._detailId); if(p){ pdSize=productSizes(p)[0]||''; pdColor=(p.colors&&p.colors[0])||''; pdImg=0; pdQty=1; } }
 }
-window.addEventListener('popstate',function(e){ navApply(e.state); window.scrollTo(0,0); render(); renderLightbox(); });
+/* ---- Leave-site guard: confirm before the Back button exits the site ----
+   Only armed when the page was reached from OFF-site (different host) or with an
+   empty referrer, so it never interrupts in-site Back navigation. A single trap
+   entry sits directly BELOW the app's base entry, so it is reached only when the
+   user backs out of the base screen (the true exit point). Guards Back only —
+   browsers do not allow custom UI to block tab/window close. */
+let _leaving=false, _guardArmed=false, _leaveModalEl=null, _leavePrevFocus=null;
+function armLeaveGuard(){
+  let sameSite=false;
+  try{ sameSite = !!document.referrer && new URL(document.referrer).host===location.host; }catch(e){}
+  if(sameSite) return;                                  // came from this site → do not arm
+  try{ history.replaceState({__trap:1},''); history.pushState({},''); _guardArmed=true; }catch(e){}
+}
+function showLeaveModal(){
+  if(_leaveModalEl) return;
+  const reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  _leavePrevFocus = document.activeElement;
+  const ov=document.createElement('div');
+  ov.setAttribute('data-leave-guard','');
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(38,24,16,.55);'+(reduce?'':'opacity:0;transition:opacity .18s ease;');
+  const card=document.createElement('div');
+  card.setAttribute('role','dialog'); card.setAttribute('aria-modal','true');
+  card.setAttribute('aria-labelledby','lg-title'); card.setAttribute('aria-describedby','lg-desc'); card.tabIndex=-1;
+  card.style.cssText='width:100%;max-width:340px;background:#fffdf9;color:#2a1c12;border:1px solid #ece0cd;border-radius:16px;padding:22px 20px;box-shadow:0 18px 50px rgba(38,24,16,.35);font-family:inherit;text-align:center;'+(reduce?'':'transform:scale(.94);transition:transform .18s ease;');
+  card.innerHTML='<h2 id="lg-title" style="margin:0 0 6px;font-size:19px;font-weight:700">Leave this site?</h2>'+
+    '<p id="lg-desc" style="margin:0 0 18px;font-size:14px;line-height:1.5;color:#6b5b4d">You will go back to the previous page.</p>'+
+    '<div style="display:flex;gap:10px">'+
+    '<button data-lg="stay" style="flex:1;min-height:46px;border:none;border-radius:11px;background:#4a2e20;color:#fff;font-weight:600;font-size:15px;font-family:inherit;cursor:pointer">Stay</button>'+
+    '<button data-lg="leave" style="flex:1;min-height:46px;border:1px solid #d9cbb8;border-radius:11px;background:#fffdf9;color:#4a2e20;font-weight:600;font-size:15px;font-family:inherit;cursor:pointer">Leave</button>'+
+    '</div>';
+  ov.appendChild(card); document.body.appendChild(ov); _leaveModalEl=ov;
+  if(!reduce){ requestAnimationFrame(()=>{ ov.style.opacity='1'; card.style.transform='scale(1)'; }); }
+  const stayBtn=card.querySelector('[data-lg="stay"]'), leaveBtn=card.querySelector('[data-lg="leave"]');
+  stayBtn.addEventListener('click', closeLeaveModal);
+  leaveBtn.addEventListener('click', doLeave);
+  ov.addEventListener('click', e=>{ if(e.target===ov) closeLeaveModal(); });   // backdrop = Stay
+  ov.addEventListener('keydown', e=>{
+    if(e.key==='Escape'){ e.preventDefault(); closeLeaveModal(); }
+    else if(e.key==='Tab'){ const f=[stayBtn,leaveBtn], i=f.indexOf(document.activeElement); e.preventDefault(); f[(i+(e.shiftKey?f.length-1:1))%f.length].focus(); }
+  });
+  stayBtn.focus();
+}
+function closeLeaveModal(){ if(!_leaveModalEl) return; const ov=_leaveModalEl; _leaveModalEl=null; ov.remove(); try{ if(_leavePrevFocus&&_leavePrevFocus.focus) _leavePrevFocus.focus(); }catch(e){} }
+function doLeave(){ _leaving=true; closeLeaveModal(); try{ history.go(-2); }catch(e){} }   // skip held entry + trap → previous (off-site) page
+
+window.addEventListener('popstate',function(e){
+  if(_leaving) return;                                   // intentional exit in progress
+  const st=e.state;
+  if(_guardArmed && st && st.__trap){                    // backed out of base → confirm before leaving
+    const s=navSnapshot(); s.base=1; try{ history.pushState(s,'',navUrl()); }catch(err){}   // hold on a real entry above the trap
+    showLeaveModal(); return;
+  }
+  navApply(st); window.scrollTo(0,0); render(); renderLightbox();
+});
 
 function go(view,opts={}){ store.view=view;
   if(opts.cat!==undefined) store.filterCat=opts.cat; if(opts.sub!==undefined) store.filterSub=opts.sub; if(opts.age!==undefined) store.filterAge=opts.age;
@@ -1364,7 +1417,7 @@ function installApp(){ if(_installPrompt){ _installPrompt.prompt(); _installProm
 if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{})); }
 /* ---- product deep link (#p/<id>) ---- */
 function openDeepLink(){ const m=/^#p\/(.+)$/.exec(location.hash||""); if(m){ const p=byId(decodeURIComponent(m[1])); if(p){ store._detailId=p.id; pdSize=productSizes(p)[0]||""; pdColor=(p.colors&&p.colors[0])||""; pdImg=0; pdQty=1; store.view="detail"; return true; } } return false; }
-async function init(){ document.documentElement.lang=LANG; applyChrome(); if(location.hostname.startsWith("admin.")||location.hash==="#admin") store.view="admin"; navReplace(true); render(); await loadData(); openDeepLink(); navReplace(true); render(); }
+async function init(){ document.documentElement.lang=LANG; applyChrome(); if(location.hostname.startsWith("admin.")||location.hash==="#admin") store.view="admin"; armLeaveGuard(); navReplace(true); render(); await loadData(); openDeepLink(); navReplace(true); render(); }
 init();
 </script>
 </body>
